@@ -35,4 +35,6 @@ def read_scenarios(dataset_directory):
         scenarios.append(scenario_frame)
     return scenarios
 
-DATASET_DIRECTORY = "/home/francisco/Desktop/Estagio_INESCTEC/INESCTEC-FLYINGNETWORKS/DataSet"
+#DATASET_DIRECTORY = "/home/francisco/Desktop/Estagio_INESCTEC/INESCTEC-FLYINGNETWORKS/DataSet"
+abs_path = os.path.abspath(os.path.dirname(__file__))
+DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")
