@@ -2,8 +2,9 @@ import pandas as pd
 import glob
 import sys
 import os
+from utils import * 
 
-path =r'Results/Scenario-1/' # use your path
+'''path =r'Results/Scenario-1/' # use your path
 allFiles = glob.glob(path + "/*.csv")
 
 frame = pd.DataFrame()
@@ -15,7 +16,7 @@ for index in range(len(allFiles)-1):
 frame = pd.concat(list_)
 
 
-print(frame)
+print(frame)'''
 
 #single_result = pd.read_csv("Results/Scenario-1/Results-1-1.csv", sep=',')
 #print(single_result)
