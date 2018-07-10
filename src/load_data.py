@@ -69,7 +69,7 @@ def read_scenarios(dataset_directory):
     return scenarios
 
 
-#read_results('../DataSet/Results/Scenario-')    
-
 abs_path = os.path.abspath(os.path.dirname(__file__))
-DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")
+#DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet") linux
+DATASET_DIRECTORY =  "../DataSet"  # windows
+
