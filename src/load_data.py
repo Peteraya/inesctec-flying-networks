@@ -5,8 +5,8 @@ import os
 from utils import * 
 
 
-def create_results(dataset_directory):
-    path =dataset_directory
+def create_results(results_directory):
+    path =results_directory
     results_list = []
     results = pd.DataFrame()
 
@@ -44,11 +44,12 @@ def create_results(dataset_directory):
 
 
 def read_results(dataset_directory):
+    results_directory = os.path.join(dataset_directory, "Results/Scenario-")
+    results_file = os.path.join(dataset_directory, "results.csv")
+    if not(os.path.isfile(results_file)):
+    	create_results(results_directory)
 
-    if not(os.path.isfile("../DataSet/results.csv")):
-    	create_results(dataset_directory)
-
-    results = pd.read_csv('../DataSet/results.csv', index_col = False, sep=',')
+    results = pd.read_csv(results_file, index_col = False, sep=',')
 
     return results
 
@@ -56,8 +57,6 @@ def read_results(dataset_directory):
 #create_results('../DataSet/Results/Scenario-')
 
 def read_scenarios(dataset_directory):
-    '''abs_path = os.path.abspath(os.path.dirname(__file__))
-    path = os.path.join(abs_path, "../DataSet")'''
     scenarios = []
     for i in range(1, 11):
         scenario_directory = os.path.join(dataset_directory, "Scenario-"+str(i))
@@ -70,8 +69,7 @@ def read_scenarios(dataset_directory):
     return scenarios
 
 
-read_results('../DataSet/Results/Scenario-')    
+#read_results('../DataSet/Results/Scenario-')    
 
-#DATASET_DIRECTORY = "/home/francisco/Desktop/Estagio_INESCTEC/INESCTEC-FLYINGNETWORKS/DataSet"
 abs_path = os.path.abspath(os.path.dirname(__file__))
 DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")
