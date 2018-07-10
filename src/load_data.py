@@ -1,6 +1,5 @@
 import pandas as pd
 import glob
-import sys
 import os
 import platform
 from utils import * 
