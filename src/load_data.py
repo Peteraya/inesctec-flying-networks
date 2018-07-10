@@ -59,7 +59,7 @@ def read_results(dataset_directory):
 def read_scenarios(dataset_directory):
     scenarios = []
     for i in range(1, 11):
-        scenario_directory = os.path.join(dataset_directory, "Scenario-"+str(i))
+        scenario_directory = os.path.join(dataset_directory, "Results/Scenario-"+str(i))
         csv_file = os.path.join(scenario_directory, "Users-Topology-"+str(i)+".csv")
         scenario_frame = pd.read_csv(csv_file)
         for j in range(0, len(scenario_frame)):
@@ -70,6 +70,6 @@ def read_scenarios(dataset_directory):
 
 
 abs_path = os.path.abspath(os.path.dirname(__file__))
-#DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet") linux
-DATASET_DIRECTORY =  "../DataSet"  # windows
+DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet") #linux
+#DATASET_DIRECTORY =  "../DataSet"  # windows
 
