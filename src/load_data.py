@@ -2,6 +2,7 @@ import pandas as pd
 import glob
 import sys
 import os
+import platform
 from utils import * 
 
 
@@ -13,11 +14,11 @@ def create_results(results_directory):
     for index_scn in range(10):
     	new_path = path + str(index_scn+1)+'/'
     	print(new_path)
-    	allFiles = glob.glob(new_path + "/*.csv")
+    	allFiles = glob.glob(new_path + "/Results-*.csv")
     	frame = pd.DataFrame()
     	list_ = []
 
-    	for index in range(len(allFiles)-1):
+    	for index in range(len(allFiles)):
     		df = pd.read_csv(allFiles[index], index_col = False, header=0)
     		list_.append(df)
 
@@ -70,6 +71,11 @@ def read_scenarios(dataset_directory):
 
 
 abs_path = os.path.abspath(os.path.dirname(__file__))
-DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet") #linux
-#DATASET_DIRECTORY =  "../DataSet"  # windows
+
+if platform.system() == "Windows" :
+	DATASET_DIRECTORY =  "../DataSet" 
+else:
+	DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")	
+
+
 
