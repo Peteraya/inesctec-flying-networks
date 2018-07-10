@@ -4,13 +4,6 @@ import sys
 import os
 from utils import * 
 
-""" 
-if os.path.isfile("../DataSet/results.csv"):
-	print("Existe")
-
-else:
-	print("nope")
-	"""
 
 def create_results(dataset_directory):
     path =dataset_directory
@@ -50,12 +43,17 @@ def create_results(dataset_directory):
     return None
 
 
+def read_results(dataset_directory):
+
+    if not(os.path.isfile("../DataSet/results.csv")):
+    	create_results(dataset_directory)
+
+    results = pd.read_csv('../DataSet/results.csv', index_col = False, sep=',')
+
+    return results
 
    
 #create_results('../DataSet/Results/Scenario-')
-#results = pd.read_csv('../DataSet/results.csv', index_col = False, sep=',')
-
-
 
 def read_scenarios(dataset_directory):
     '''abs_path = os.path.abspath(os.path.dirname(__file__))
@@ -70,6 +68,9 @@ def read_scenarios(dataset_directory):
             scenario_frame.loc[j, 'y'] = int((scenario_frame.loc[j, 'y']-15)/30)
         scenarios.append(scenario_frame)
     return scenarios
+
+
+read_results('../DataSet/Results/Scenario-')    
 
 #DATASET_DIRECTORY = "/home/francisco/Desktop/Estagio_INESCTEC/INESCTEC-FLYINGNETWORKS/DataSet"
 abs_path = os.path.abspath(os.path.dirname(__file__))
