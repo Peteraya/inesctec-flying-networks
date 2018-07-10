@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 def rotate(size, x, y, angle):
     if angle == 90:
@@ -9,10 +10,13 @@ def rotate(size, x, y, angle):
         return size - 1 - y, x
 
 def rotation(df, size, angle):
+    new_df = pd.DataFrame(columns = ['x', 'y', 'dataRate'])
     for i in range(0, len(df)):
         new_x, new_y = rotate(size, df.loc[i, 'x'], df.loc[i, 'y'], angle)
-        df.loc[i, 'x'] = new_x
-        df.loc[i, 'y'] = new_y
+        new_df.loc[i, 'x'] = new_x
+        new_df.loc[i, 'y'] = new_y
+        new_df.loc[i, 'dataRate'] = df.loc[i, 'dataRate']
+    return new_df
 
 def simmetric(size, x, y, angle_axis):
     if angle_axis == 0:
@@ -26,7 +30,10 @@ def simmetric(size, x, y, angle_axis):
 
 
 def simmetry(df, size, angle_axis):
+    new_df = pd.DataFrame(columns = ['x', 'y', 'dataRate'])
     for i in range(0, len(df)):
         new_x, new_y = simmetric(size, df.loc[i, 'x'], df.loc[i, 'y'], angle_axis)
-        df.loc[i, 'x'] = new_x
-        df.loc[i, 'y'] = new_y
+        new_df.loc[i, 'x'] = new_x
+        new_df.loc[i, 'y'] = new_y
+        new_df.loc[i, 'dataRate'] = df.loc[i, 'dataRate']
+    return new_df
