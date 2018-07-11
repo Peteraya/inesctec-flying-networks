@@ -63,5 +63,14 @@ for index in range(len(scenarios)):
 # sparse_matrix = np.zeros((10,10), dtype = 'int')
 # sparse_matrix = np.matrix(sparse_matrix)
 
+def scenario_array(scenario_frame):
+    scenario_array = np.zeros((10, 10), dtype = 'int')
+    for i in range(len(scenario_frame)):
+        x = scenario_frame.loc[i, 'x']
+        y = scenario_frame.loc[i, 'y']
+        rate = scenario_frame.loc[i, 'dataRateMbps']
+        scenario_array[x][y] = rate
+    
+    return scenario_array    
 
 
