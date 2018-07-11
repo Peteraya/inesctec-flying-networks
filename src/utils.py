@@ -20,19 +20,36 @@ def simmetric(size, x, y, angle_axis):
     elif angle_axis == 135:
         return size - 1 - y, size - 1 - x 
 
-#transform_scenarios(frame, 10, rotate, 90)
-#transform_scenarios(frame, 10, simmetric, 0)
-def transform_scenarios(df, size, function, angle):
-    new_df = pd.DataFrame(columns = ['x', 'y', 'dataRateMbps'])
+#transform_scenarios(scenarios, 10, rotate, 90)  #possible angles: 90, 180, 270
+#transform_scenarios(scenarios, 10, simmetric, 0)  #possible angles: 0, 45, 90, 135
+def transform_scenarios(scenarios, size, function, angle):
+    new_scenarios = pd.DataFrame(columns = ['x', 'y', 'dataRateMbps'])
     for y in range(0, size):
         for x in range(0, size):
             i = y * size + x
-            new_df.loc[i, 'x'] = x
-            new_df.loc[i, 'y'] = y
+            new_scenarios.loc[i, 'x'] = x
+            new_scenarios.loc[i, 'y'] = y
 
     for y in range(0, size):
         for x in range(0, size):
             i = y * size + x
-            new_x, new_y = function(size, df.loc[i, 'x'], df.loc[i, 'y'], angle)
-            new_df.loc[new_y*size + new_x, 'dataRateMbps'] = df.loc[i, 'dataRateMbps']
-    return new_df
+            new_x, new_y = function(size, scenarios.loc[i, 'x'], scenarios.loc[i, 'y'], angle)
+            new_scenarios.loc[new_y*size + new_x, 'dataRateMbps'] = scenarios.loc[i, 'dataRateMbps']
+    return new_scenarios
+
+#transform_results(results, 10, rotate, 90) #possible angles: 90, 180, 270
+#transform_results(results, 10, simmetric, 45) #possible angles: 0, 45, 90, 135
+def transform_results(results, size, function, angle):
+    new_results = results.copy() 
+    for i in range(len(results)):
+        new_x, new_y = function(size, results.loc[i, 'fmap1CoordinatesX'], results.loc[i, 'fmap1CoordinatesY'], angle)
+        new_results.loc[i, 'fmap1CoordinatesX'] = new_x
+        new_results.loc[i, 'fmap1CoordinatesY'] = new_y
+        new_x, new_y = function(size, results.loc[i, 'fmap2CoordinatesX'], results.loc[i, 'fmap2CoordinatesY'], angle)
+        new_results.loc[i, 'fmap2CoordinatesX'] = new_x
+        new_results.loc[i, 'fmap2CoordinatesY'] = new_y
+        new_x, new_y = function(size, results.loc[i, 'fmap3CoordinatesX'], results.loc[i, 'fmap3CoordinatesY'], angle)
+        new_results.loc[i, 'fmap3CoordinatesX'] = new_x
+        new_results.loc[i, 'fmap3CoordinatesY'] = new_y
+
+    return new_results
