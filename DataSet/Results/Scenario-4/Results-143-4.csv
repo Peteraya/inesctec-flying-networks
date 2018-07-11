@@ -1,2 +1,2 @@
 topologyId,nSimulationRun,fmap1CoordinatesX,fmap1CoordinatesY,fmap2CoordinatesX,fmap2CoordinatesY,fmap3CoordinatesX,fmap3CoordinatesY,meanTxBitrateMbps,meanRxBitrateMbps,meanDelayMs,meanJitterMs,meanPdr
-3,4,75,165,285,165,45,285,8.69425,4.76868,952,2,0.583137
+143,4,75,165,285,165,45,285,8.69425,4.76868,952,2,0.583137
