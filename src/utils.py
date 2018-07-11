@@ -9,14 +9,6 @@ def rotate(size, x, y, angle):
     elif angle == 270:
         return size - 1 - y, x
 
-def rotation(df, size, angle):
-    new_df = pd.DataFrame(columns = ['x', 'y', 'dataRate'])
-    for i in range(0, len(df)):
-        new_x, new_y = rotate(size, df.loc[i, 'x'], df.loc[i, 'y'], angle)
-        new_df.loc[i, 'x'] = new_x
-        new_df.loc[i, 'y'] = new_y
-        new_df.loc[i, 'dataRate'] = df.loc[i, 'dataRate']
-    return new_df
 
 def simmetric(size, x, y, angle_axis):
     if angle_axis == 0:
@@ -28,12 +20,19 @@ def simmetric(size, x, y, angle_axis):
     elif angle_axis == 135:
         return size - 1 - y, size - 1 - x 
 
+#transform_scenarios(frame, 10, rotate, 90)
+#transform_scenarios(frame, 10, simmetric, 0)
+def transform_scenarios(df, size, function, angle):
+    new_df = pd.DataFrame(columns = ['x', 'y', 'dataRateMbps'])
+    for y in range(0, size):
+        for x in range(0, size):
+            i = y * size + x
+            new_df.loc[i, 'x'] = x
+            new_df.loc[i, 'y'] = y
 
-def simmetry(df, size, angle_axis):
-    new_df = pd.DataFrame(columns = ['x', 'y', 'dataRate'])
-    for i in range(0, len(df)):
-        new_x, new_y = simmetric(size, df.loc[i, 'x'], df.loc[i, 'y'], angle_axis)
-        new_df.loc[i, 'x'] = new_x
-        new_df.loc[i, 'y'] = new_y
-        new_df.loc[i, 'dataRate'] = df.loc[i, 'dataRate']
+    for y in range(0, size):
+        for x in range(0, size):
+            i = y * size + x
+            new_x, new_y = function(size, df.loc[i, 'x'], df.loc[i, 'y'], angle)
+            new_df.loc[new_y*size + new_x, 'dataRateMbps'] = df.loc[i, 'dataRateMbps']
     return new_df
