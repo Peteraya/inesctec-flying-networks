@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import math
+from settings import *
+from random import *
 
 def rotate(size, x, y, angle):
     if angle == 90:
@@ -86,3 +88,13 @@ def sparse_to_distance(sparse_matrix):
             distance_matrix[i][j] = min_distance 
 
     return distance_matrix
+
+
+def build_topologie_list(scenarios):
+
+    top_list = []
+
+    for index in range(len(scenarios)):
+        top_list.append(sample(range(1, SCENARIO_TOPOLOGIES_NO), TOPOLOGIES_TRAINING))
+
+    return top_list
