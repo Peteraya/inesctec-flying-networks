@@ -73,7 +73,7 @@ def sparse_matrix(results_line):
 def build_model_structure(scenarios, results, list_scenarios, list_topologies):
     for i in range(list_scenarios):
         scenario_id = list_scenarios[i]
-        scenario_array = scenario_array(scenarios[i])
+        scenario_array = datarate_matrix(scenarios[i])
         scenario_begin = (scenario_id - 1) * SCENARIO_TOPOLOGIES_NO
         scenario_end = scenario_id * SCENARIO_TOPOLOGIES_NO
 
