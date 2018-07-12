@@ -3,6 +3,7 @@ import numpy as np
 import copy
 import pandas as pd
 from settings import *
+from utils import *
 
 
 	# usar func para np array com [scenarioX, top1.....]
@@ -57,7 +58,7 @@ def datarate_matrix(scenario_frame):
     
     return scenario_matrix    
 
-def sparse_matrix(results_line):
+def drones_matrix(results_line):
     matrix = np.zeros((SCENARIO_ROWS, SCENARIO_COLUMNS), dtype = 'float')
     drone1_x = int(results_line.loc['fmap1CoordinatesX'])
     drone1_y = int(results_line.loc['fmap1CoordinatesY'])
@@ -70,10 +71,20 @@ def sparse_matrix(results_line):
     matrix[drone3_x][drone3_y] = 1
     return matrix
 
-def build_model_structure(scenarios, results, list_scenarios, list_topologies):
-    for i in range(list_scenarios):
-        scenario_id = list_scenarios[i]
-        scenario_array = datarate_matrix(scenarios[i])
-        scenario_begin = (scenario_id - 1) * SCENARIO_TOPOLOGIES_NO
-        scenario_end = scenario_id * SCENARIO_TOPOLOGIES_NO
+#This function is INCOMPLETE DON'T USE IT
+def build_model_structure_complete(scenarios, results):
+    for index_results in range(len(results)):
+        scenario_id = int (index_results / SCENARIO_TOPOLOGIES_NO) + 1
+        scenario_matrix = datarate_matrix(scenarios[scenario_id]) 
 
+def build_model_structure(scenarios, results, list_scenarios, list_topologies):
+    for scenario_id in list_scenarios:
+        scenario_begin_index = (scenario_id - 1) * SCENARIO_TOPOLOGIES_NO
+        scenario_end = scenario_id * SCENARIO_TOPOLOGIES_NO
+        scenario_matrix = datarate_matrix(scenarios[scenario_id - 1])
+        for topology_id in list_topologies:
+            index_results = scenario_begin_index + topology_id - 1
+            matrix_encoding = drones_matrix(results.loc[index_results])
+            if(DISTANCE_ENCODING == 1):
+                matrix_encoding = sparse_to_distance(matrix_encoding)
+            
