@@ -3,6 +3,7 @@ import glob
 import os
 import platform
 from utils import *
+from settings import *
 
 
 
@@ -10,11 +11,11 @@ def create_results(dataset_directory):
     results_directory = os.path.join(dataset_directory, "Results/Scenario-")
     path =results_directory
     results_list = []
-    for index_scn in range(10):
+    for index_scn in range(SCENARIOS_NO):
         new_path = path + str(index_scn+1)+'/'
         print(new_path)
         list_scenario = []
-        for index in range(200):
+        for index in range(SCENARIOS_TOPOLOGIES_NO):
             allFiles = glob.glob(new_path + "/Results-"+str(index + 1)+"-*.csv")
             frame = pd.DataFrame()
             list_ = []
@@ -54,8 +55,6 @@ def read_results(dataset_directory):
     return results
 
 
-#create_results('../DataSet/Results/Scenario-')
-
 def read_scenarios(dataset_directory):
     scenarios = []
     for i in range(1, 11):
@@ -69,12 +68,7 @@ def read_scenarios(dataset_directory):
     return scenarios
 
 
-abs_path = os.path.abspath(os.path.dirname(__file__))
 
-if platform.system() == "Windows" :
-    DATASET_DIRECTORY =  "../DataSet"
-else:
-    DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")
 
 
 

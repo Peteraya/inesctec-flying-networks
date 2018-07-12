@@ -1,19 +1,7 @@
 from sklearn.model_selection import train_test_split
 import numpy as np
 import copy
-from load_data import *
-
-
-'''abs_path = os.path.abspath(os.path.dirname(__file__))
-
-if platform.system() == "Windows" :
-    DATASET_DIRECTORY =  "../DataSet" 
-else:
-    DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")
-
-
-results = read_results(DATASET_DIRECTORY)
-scenarios = read_scenarios(DATASET_DIRECTORY)'''
+from settings import *
 
 def model_list(results, scenarios):
     model_list = []
@@ -64,7 +52,7 @@ def model_list(results, scenarios):
 # sparse_matrix = np.matrix(sparse_matrix)
 
 def scenario_array(scenario_frame):
-    scenario_array = np.zeros((10, 10), dtype = 'int')
+    scenario_array = np.zeros((SCENARIO_ROWS, SCENARIO_COLUMNS), dtype = 'float')
     for i in range(len(scenario_frame)):
         x = scenario_frame.loc[i, 'x']
         y = scenario_frame.loc[i, 'y']
@@ -73,4 +61,20 @@ def scenario_array(scenario_frame):
     
     return scenario_array    
 
+def sparse_matrix(results_line):
+    matrix = np.zeros((SCENARIO_ROWS, SCENARIO_COLUMNS), dtype = 'float')
+    drone1_x = results_line.loc['fmap1CoordinatesX']
+    drone1_y = results_line.loc['fmap1CoordinatesY']
+    drone2_x = results_line.loc['fmap2CoordinatesX']
+    drone2_y = results_line.loc['fmap2CoordinatesY']
+    drone3_x = results_line.loc['fmap3CoordinatesX']
+    drone3_y = results_line.loc['fmap3CoordinatesY']
+    matrix[drone1_x][drone1_y] = 1
+    matrix[drone2_x][drone2_y] = 1
+    matrix[drone3_x][drone3_y] = 1
+    return matrix
+
+'''def build_model_structure(scenarios, results, list_scenarios, normalized):
+    for i in range(list_scenarios):
+        scenarios_id = '''
 
