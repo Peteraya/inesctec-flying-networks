@@ -7,9 +7,6 @@ from settings import *
 from utils import *
 
 
-	# usar func para np array com [scenarioX, top1.....]
-
-
 def model_list(results, scenarios):
     model_list = []
 
