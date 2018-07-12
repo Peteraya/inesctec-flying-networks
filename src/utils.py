@@ -13,7 +13,7 @@ def rotate(size, x, y, angle):
         return size - 1 - y, x
 
 
-def simmetric(size, x, y, angle_axis):
+def symmetric(size, x, y, angle_axis):
     if angle_axis == 0:
         return x, size - 1 - y
     elif angle_axis == 45:
@@ -56,6 +56,16 @@ def transform_results(results, size, function, angle):
         new_results.loc[i, 'fmap3CoordinatesY'] = new_y
 
     return new_results
+
+#Note: the matrix has to be square
+def transform_matrix(matrix, function, angle):
+    size = len(matrix)
+    new_matrix = np.empty((size, size), dtype = 'float')
+    for y in range(len(matrix)):
+        for x in range(len(matrix[y])):
+            new_x, new_y = function(size, x, y, angle)
+            new_matrix[new_y][new_x] = matrix[y][x]
+    return new_matrix    
 
 def distance(cell1, cell2):
     return math.sqrt((cell1[0]-cell2[0])*(cell1[0]-cell2[0]) + (cell1[1]-cell2[1])*(cell1[1]-cell2[1]) )
