@@ -4,57 +4,57 @@ import copy
 from load_data import *
 
 
-abs_path = os.path.abspath(os.path.dirname(__file__))
+'''abs_path = os.path.abspath(os.path.dirname(__file__))
 
 if platform.system() == "Windows" :
-	DATASET_DIRECTORY =  "../DataSet" 
+    DATASET_DIRECTORY =  "../DataSet" 
 else:
-	DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")
+    DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")
 
 
 results = read_results(DATASET_DIRECTORY)
-scenarios = read_scenarios(DATASET_DIRECTORY)
+scenarios = read_scenarios(DATASET_DIRECTORY)'''
+
+def model_list(results, scenarios):
+    model_list = []
+
+    for index in range(len(scenarios)):
+                
+        scenario_results = results.loc[results["Scenario"] == (index+1)]
+    
+        scenario_list = []
+
+        for index_res in range(len(scenario_results)):
+        
+            scenario_frame = copy.deepcopy(scenarios[index])
+            scenario_frame["UAV"] = 0
+        
+            top_scenario = scenario_results.loc[scenario_results["topologyId"] == (index_res+1)]
+            #scenario_frame["topologyId"] = (index_res+1)
+            # UAV 1
+            x_frame = scenario_frame['x'] == int(top_scenario['fmap1CoordinatesX'])
+            y_frame = scenario_frame['y'] == int(top_scenario['fmap1CoordinatesY'])
+            row_ind = scenario_frame[x_frame & y_frame].index
+            scenario_frame.loc[row_ind, 'UAV'] = 1
+            # UAV 2
+            x_frame = scenario_frame['x'] == int(top_scenario['fmap2CoordinatesX'])
+            y_frame = scenario_frame['y'] == int(top_scenario['fmap2CoordinatesY'])
+            row_ind = scenario_frame[x_frame & y_frame].index
+            scenario_frame.loc[row_ind, 'UAV'] = 1
+            # UAV 3
+            x_frame = scenario_frame['x'] == int(top_scenario['fmap3CoordinatesX'])
+            y_frame = scenario_frame['y'] == int(top_scenario['fmap3CoordinatesY'])
+            row_ind = scenario_frame[x_frame & y_frame].index
+            scenario_frame.loc[row_ind, 'UAV'] = 1
+
+            scenario_list.append(scenario_frame)
 
 
-model_list = []
+        aux_model_list = pd.DataFrame()
+        aux_model_list = pd.concat(scenario_list)
+        model_list.append(scenario_list)
 
-
-for index in range(len(scenarios)):
-	
-	scenario_results = results.loc[results["Scenario"] == (index+1)]
-	
-	scenario_list = []
-
-	for index_res in range(len(scenario_results)):
-		
-		scenario_frame = copy.deepcopy(scenarios[index])
-		scenario_frame["UAV"] = 0
-		
-		top_scenario = scenario_results.loc[scenario_results["topologyId"] == (index_res+1)]
-		#scenario_frame["topologyId"] = (index_res+1)
-		# UAV 1
-		x_frame = scenario_frame['x'] == int(top_scenario['fmap1CoordinatesX'])
-		y_frame = scenario_frame['y'] == int(top_scenario['fmap1CoordinatesY'])
-		row_ind = scenario_frame[x_frame & y_frame].index
-		scenario_frame.loc[row_ind, 'UAV'] = 1
-		# UAV 2
-		x_frame = scenario_frame['x'] == int(top_scenario['fmap2CoordinatesX'])
-		y_frame = scenario_frame['y'] == int(top_scenario['fmap2CoordinatesY'])
-		row_ind = scenario_frame[x_frame & y_frame].index
-		scenario_frame.loc[row_ind, 'UAV'] = 1
-		# UAV 3
-		x_frame = scenario_frame['x'] == int(top_scenario['fmap3CoordinatesX'])
-		y_frame = scenario_frame['y'] == int(top_scenario['fmap3CoordinatesY'])
-		row_ind = scenario_frame[x_frame & y_frame].index
-		scenario_frame.loc[row_ind, 'UAV'] = 1
-
-		scenario_list.append(scenario_frame)
-
-
-	aux_model_list = pd.DataFrame()
-	aux_model_list = pd.concat(scenario_list)
-	model_list.append(scenario_list)
-
+    return model_list
 
 
 #model_dataframe = pd.DataFrame()

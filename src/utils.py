@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import math
 
 def rotate(size, x, y, angle):
     if angle == 90:
@@ -53,3 +54,25 @@ def transform_results(results, size, function, angle):
         new_results.loc[i, 'fmap3CoordinatesY'] = new_y
 
     return new_results
+
+def distance(cell1, cell2):
+    return math.sqrt((cell1[0]-cell2[0])*(cell1[0]-cell2[0]) + (cell1[1]-cell2[1])*(cell1[1]-cell2[1]) )
+
+def sparse_to_distance(sparse_matrix):
+    drone_positions = []
+    for i in range(len(sparse_matrix)):
+        for j in range(len(sparse_matrix[i])):
+            if(sparse_matrix[i][j] == 1):
+                drone_positions.append([i, j])
+    
+    distance_matrix=np.empty((len(sparse_matrix), len(sparse_matrix[0])), dtype='float')
+    for i in range(len(distance_matrix)):
+        for j in range(len(distance_matrix[i])):
+            min_distance = len(distance_matrix) + len(distance_matrix[i]) + 1
+            for k in range(len(drone_positions)):
+                new_distance = distance([i, j], drone_positions[k])
+                if(new_distance < min_distance):
+                    min_distance = new_distance
+            distance_matrix[i][j] = min_distance 
+
+    return distance_matrix
