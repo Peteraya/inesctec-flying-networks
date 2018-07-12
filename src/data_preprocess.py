@@ -47,15 +47,15 @@ def model_list(results, scenarios):
     return model_list
 
 
-def scenario_array(scenario_frame):
-    scenario_array = np.zeros((SCENARIO_ROWS, SCENARIO_COLUMNS), dtype = 'float')
+def datarate_matrix(scenario_frame):
+    scenario_matrix = np.zeros((SCENARIO_ROWS, SCENARIO_COLUMNS), dtype = 'float')
     for i in range(len(scenario_frame)):
         x = scenario_frame.loc[i, 'x']
         y = scenario_frame.loc[i, 'y']
         rate = scenario_frame.loc[i, 'dataRateMbps']
-        scenario_array[x][y] = rate
+        scenario_matrix[x][y] = rate
     
-    return scenario_array    
+    return scenario_matrix    
 
 def sparse_matrix(results_line):
     matrix = np.zeros((SCENARIO_ROWS, SCENARIO_COLUMNS), dtype = 'float')
@@ -70,7 +70,10 @@ def sparse_matrix(results_line):
     matrix[drone3_x][drone3_y] = 1
     return matrix
 
-'''def build_model_structure(scenarios, results, list_scenarios, normalized):
+def build_model_structure(scenarios, results, list_scenarios, list_topologies):
     for i in range(list_scenarios):
-        scenarios_id = '''
+        scenario_id = list_scenarios[i]
+        scenario_array = scenario_array(scenarios[i])
+        scenario_begin = (scenario_id - 1) * SCENARIO_TOPOLOGIES_NO
+        scenario_end = scenario_id * SCENARIO_TOPOLOGIES_NO
 
