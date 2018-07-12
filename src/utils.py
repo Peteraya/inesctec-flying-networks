@@ -89,6 +89,12 @@ def sparse_to_distance(sparse_matrix):
 
     return distance_matrix
 
+def normalize_matrix(matrix):
+    array_matrix = np.ravel(matrix)
+    mean = np.mean(array_matrix, axis = 0)
+    std = np.std(array_matrix, axis = 0)
+    new_array = [(elem - mean) / std for elem in array_matrix]
+    return new_array.reshape(len(matrix), len(matrix[0]))
 
 def build_topologie_train_list(scenarios):
 
