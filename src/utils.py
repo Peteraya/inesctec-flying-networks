@@ -13,7 +13,7 @@ def rotate(size, x, y, angle):
         return size - 1 - y, x
 
 
-def simmetric(size, x, y, angle_axis):
+def symmetric(size, x, y, angle_axis):
     if angle_axis == 0:
         return x, size - 1 - y
     elif angle_axis == 45:
