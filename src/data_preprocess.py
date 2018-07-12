@@ -1,6 +1,7 @@
 from sklearn.model_selection import train_test_split
 import numpy as np
 import copy
+import pandas as pd
 from settings import *
 
 def model_list(results, scenarios):
