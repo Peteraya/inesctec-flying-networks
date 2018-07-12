@@ -80,7 +80,7 @@ def sparse_to_distance(sparse_matrix):
     return distance_matrix
 
 
-def build_topologie_list(scenarios):
+def build_topologie_train_list(scenarios):
 
     top_list = []
 
@@ -88,3 +88,24 @@ def build_topologie_list(scenarios):
         top_list.append(sample(range(1, SCENARIO_TOPOLOGIES_NO), TOPOLOGIES_TRAINING))
 
     return top_list
+
+
+def build_topologie_validation_n_test_list(train_list):
+
+    return_list = []
+    validation_list = []
+    test_list = []
+    complete_list = list(range(1,(SCENARIO_TOPOLOGIES_NO+1)))
+
+    for index in range(len(train_list)):
+
+        diff = list(set(complete_list) - set(train_list[index]))
+        validation_list.append(diff[:TOPOLOGIES_VALIDATION])
+        test_list.append(diff[TOPOLOGIES_VALIDATION:])
+
+    return_list.append(validation_list)
+    return_list.append(test_list)
+
+    return return_list
+
+
