@@ -9,7 +9,6 @@ def create_topologies_matrix(results, scenarios):
 	topologie = np.zeros((10,10), dtype = 'int')
 	top_scenario = results.iloc[0]
 
-	print(top_scenario['fmap1CoordinatesX'])
 	#UVA 1
 	x_frame = int(top_scenario['fmap1CoordinatesX'])
 	y_frame = int(top_scenario['fmap1CoordinatesY'])
