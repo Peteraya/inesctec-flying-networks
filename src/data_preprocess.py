@@ -4,27 +4,6 @@ import copy
 from settings import *
 
 
-def create_topologies_matrix(results, scenarios):
-
-	topologie = np.zeros((10,10), dtype = 'int')
-	top_scenario = results.iloc[0]
-
-	#UVA 1
-	x_frame = int(top_scenario['fmap1CoordinatesX'])
-	y_frame = int(top_scenario['fmap1CoordinatesY'])
-	topologie[x_frame][y_frame] = 1
-	#UVA 2
-	x_frame = int(top_scenario['fmap2CoordinatesX'])
-	y_frame = int(top_scenario['fmap2CoordinatesY'])
-	topologie[x_frame][y_frame] = 1
-	#UVA 3
-	x_frame = int(top_scenario['fmap3CoordinatesX'])
-	y_frame = int(top_scenario['fmap3CoordinatesY'])
-	topologie[x_frame][y_frame] = 1
-
-	
-	return topologie 
-
 	# usar func para np array com [scenarioX, top1.....]
 
 
@@ -79,12 +58,12 @@ def scenario_array(scenario_frame):
 
 def sparse_matrix(results_line):
     matrix = np.zeros((SCENARIO_ROWS, SCENARIO_COLUMNS), dtype = 'float')
-    drone1_x = results_line.loc['fmap1CoordinatesX']
-    drone1_y = results_line.loc['fmap1CoordinatesY']
-    drone2_x = results_line.loc['fmap2CoordinatesX']
-    drone2_y = results_line.loc['fmap2CoordinatesY']
-    drone3_x = results_line.loc['fmap3CoordinatesX']
-    drone3_y = results_line.loc['fmap3CoordinatesY']
+    drone1_x = int(results_line.loc['fmap1CoordinatesX'])
+    drone1_y = int(results_line.loc['fmap1CoordinatesY'])
+    drone2_x = int(results_line.loc['fmap2CoordinatesX'])
+    drone2_y = int(results_line.loc['fmap2CoordinatesY'])
+    drone3_x = int(results_line.loc['fmap3CoordinatesX'])
+    drone3_y = int(results_line.loc['fmap3CoordinatesY'])
     matrix[drone1_x][drone1_y] = 1
     matrix[drone2_x][drone2_y] = 1
     matrix[drone3_x][drone3_y] = 1
