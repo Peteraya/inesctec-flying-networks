@@ -4,6 +4,31 @@ import copy
 import pandas as pd
 from settings import *
 
+
+def create_topologies_matrix(results, scenarios):
+
+	topologie = np.zeros((10,10), dtype = 'int')
+	top_scenario = results.iloc[0]
+
+	#UVA 1
+	x_frame = int(top_scenario['fmap1CoordinatesX'])
+	y_frame = int(top_scenario['fmap1CoordinatesY'])
+	topologie[x_frame][y_frame] = 1
+	#UVA 2
+	x_frame = int(top_scenario['fmap2CoordinatesX'])
+	y_frame = int(top_scenario['fmap2CoordinatesY'])
+	topologie[x_frame][y_frame] = 1
+	#UVA 3
+	x_frame = int(top_scenario['fmap3CoordinatesX'])
+	y_frame = int(top_scenario['fmap3CoordinatesY'])
+	topologie[x_frame][y_frame] = 1
+
+	
+	return topologie 
+
+	# usar func para np array com [scenarioX, top1.....]
+
+
 def model_list(results, scenarios):
     model_list = []
 
@@ -38,19 +63,10 @@ def model_list(results, scenarios):
 
             scenario_list.append(scenario_frame)
 
-
-        aux_model_list = pd.DataFrame()
-        aux_model_list = pd.concat(scenario_list)
         model_list.append(scenario_list)
 
     return model_list
 
-
-#model_dataframe = pd.DataFrame()
-#model_dataframe = pd.concat(model_list)
-#model_dataframe.to_csv('model_entry.csv', sep=',',index = False)
-# sparse_matrix = np.zeros((10,10), dtype = 'int')
-# sparse_matrix = np.matrix(sparse_matrix)
 
 def scenario_array(scenario_frame):
     scenario_array = np.zeros((SCENARIO_ROWS, SCENARIO_COLUMNS), dtype = 'float')
