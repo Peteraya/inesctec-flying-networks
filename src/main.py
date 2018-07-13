@@ -40,7 +40,7 @@ else:
 
 
 model = build_model()
-model.compile(optimizer = "adam", loss="mse")
+model.compile(optimizer = "adam", loss="mse", metrics=['accuracy'])
 
 
 train_matrix = np.array(train_matrix)
@@ -56,12 +56,54 @@ throughput_test, delay_test, jitter_test, pdr_test = separate_qualities(qualitie
 throughput_test, delay_test, jitter_test, pdr_test = np.array(throughput_test), np.array(delay_test), np.array(jitter_test), np.array(pdr_test)
 
 
+# throughput
 model.fit(train_matrix, throughput_train, epochs=20, batch_size=1, verbose=1)
 
 y_pred = model.predict(test_matrix)
 
 score_valid = model.evaluate(validation_matrix, throughput_validation,verbose=1)
-print("Validation score: ", score_valid)
+print("Validation score throughput: ", score_valid)
 
 score_test = model.evaluate(test_matrix, throughput_test,verbose=1)
-print("Test score: ", score_test)
+print("Test score throughput: ", score_test)
+
+print("----------------------------------------------------")
+
+# delay
+model.fit(train_matrix, delay_train, epochs=20, batch_size=1, verbose=1)
+
+y_pred = model.predict(test_matrix)
+
+score_valid = model.evaluate(validation_matrix, delay_validation,verbose=1)
+print("Validation score delay: ", score_valid)
+
+score_test = model.evaluate(test_matrix, delay_test,verbose=1)
+print("Test score delay: ", score_test)
+
+print("----------------------------------------------------")
+
+
+# jitter
+model.fit(train_matrix, jitter_train, epochs=20, batch_size=1, verbose=1)
+
+y_pred = model.predict(test_matrix)
+
+score_valid = model.evaluate(validation_matrix, jitter_validation,verbose=1)
+print("Validation score jitter: ", score_valid)
+
+score_test = model.evaluate(test_matrix, jitter_test,verbose=1)
+print("Test score jitter: ", score_test)
+
+print("----------------------------------------------------")
+
+
+# pdr
+model.fit(train_matrix, pdr_train, epochs=20, batch_size=1, verbose=1)
+
+y_pred = model.predict(test_matrix)
+
+score_valid = model.evaluate(validation_matrix, pdr_validation,verbose=1)
+print("Validation score pdr: ", score_valid)
+
+score_test = model.evaluate(test_matrix, pdr_test,verbose=1)
+print("Test score pdr: ", score_test)
