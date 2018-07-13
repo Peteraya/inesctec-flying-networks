@@ -40,7 +40,8 @@ else:
 
 
 model = build_model()
-model.compile(optimizer = "adam", loss="mse", accuracy="rmse")
+model.compile(optimizer = "adam", loss="mse")
+
 
 train_matrix = np.array(train_matrix)
 throughput_train, delay_train, jitter_train, pdr_train = separate_qualities(qualities_train)
@@ -55,4 +56,12 @@ throughput_test, delay_test, jitter_test, pdr_test = separate_qualities(qualitie
 throughput_test, delay_test, jitter_test, pdr_test = np.array(throughput_test), np.array(delay_test), np.array(jitter_test), np.array(pdr_test)
 
 
-#model.fit(train_matrix, throughput_train, epochs=5, batch_size=1, verbose=1)
+model.fit(train_matrix, throughput_train, epochs=20, batch_size=1, verbose=1)
+
+y_pred = model.predict(test_matrix)
+
+score_valid = model.evaluate(validation_matrix, throughput_validation,verbose=1)
+print("Validation score: ", score_valid)
+
+score_test = model.evaluate(test_matrix, throughput_test,verbose=1)
+print("Test score: ", score_test)
