@@ -105,9 +105,9 @@ def build_model_structure(scenarios, results, list_scenarios, list_topologies):
         for topology_id in list_topologies[index_scenario]:
             index_results = scenario_begin_index + topology_id - 1
             topology_matrix_aux, qualities_list = drones_matrix(results.loc[index_results])
-            topology_matrix = normalize_sparse_topology(topology_matrix_aux)
-
-            if(DISTANCE_ENCODING == 1):
+            if(DISTANCE_ENCODING == 0):
+                topology_matrix = normalize_sparse_topology(topology_matrix_aux)
+            else:
                 topology_matrix = normalize_matrix(sparse_to_distance(topology_matrix_aux))
             model_struct_orig.append([scenario_matrix, topology_matrix])
             model_prediction.append(qualities_list)
@@ -133,7 +133,7 @@ def build_model_structure(scenarios, results, list_scenarios, list_topologies):
 def normalize_sparse_topology(matrix):
     new_matrix = np.empty((len(matrix), len(matrix[0])), dtype = "float")
     mean = (97*0+3*1)/100
-    std = math.sqrt(97*(0-mean)*(0-mean)+3*(1-mean)*(1-mean))
+    std = math.sqrt((97*(0-mean)*(0-mean)+3*(1-mean)*(1-mean))/100)
 
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):

@@ -3,7 +3,8 @@ import os
 import numpy as np
 from load_data import *
 from data_preprocess import *
-from model import *
+from models.base_model import *
+from models.default_model import *
 
 
 abs_path = os.path.abspath(os.path.dirname(__file__))
@@ -38,9 +39,22 @@ else:
 	validation_matrix, qualities_validation = build_model_structure(scenarios, results, SCENARIOS_VALIDATION, topologies_list)
 	test_matrix, qualities_test = build_model_structure(scenarios, results, SCENARIOS_TEST, topologies_list)
 
+train_matrix = np.array(train_matrix)
+throughput_train, delay_train, jitter_train, pdr_train = separate_qualities(qualities_train)
+throughput_train, delay_train, jitter_train, pdr_train = np.array(throughput_train), np.array(delay_train), np.array(jitter_train), np.array(pdr_train)
 
-model = build_model()
-model.compile(optimizer = "adam", loss="mse", metrics=['accuracy'])
+validation_matrix = np.array(validation_matrix)
+throughput_validation, delay_validation, jitter_validation, pdr_validation = separate_qualities(qualities_validation)
+throughput_validation, delay_validation, jitter_validation, pdr_validation = np.array(throughput_validation), np.array(delay_validation), np.array(jitter_validation), np.array(pdr_validation)
+
+
+model = DefaultModel()
+model.run(train_matrix, throughput_train, validation_matrix, throughput_validation, "throughput")
+model.run(train_matrix, delay_train, validation_matrix, delay_validation, "delay")
+model.run(train_matrix, jitter_train, validation_matrix, jitter_validation, "jitter")
+model.run(train_matrix, pdr_train, validation_matrix, pdr_validation, "pdr")
+'''model = build_model()
+model.compile(optimizer = "adam", loss="mse", metrics=['mae'])
 
 
 train_matrix = np.array(train_matrix)
@@ -106,4 +120,4 @@ score_valid = model.evaluate(validation_matrix, pdr_validation,verbose=1)
 print("Validation score pdr: ", score_valid)
 
 score_test = model.evaluate(test_matrix, pdr_test,verbose=1)
-print("Test score pdr: ", score_test)
+print("Test score pdr: ", score_test)'''

@@ -104,7 +104,6 @@ def normalize_matrix(matrix):
             sum_std += (matrix[i][j] - mean)*(matrix[i][j] - mean)
   
     std = math.sqrt(sum_std / matrix_noElems)
-    print(std)
     for i in range(len(matrix)):
        for j in range(len(matrix[0])):
            new_matrix[i][j] = (matrix[i][j] - mean) / std
