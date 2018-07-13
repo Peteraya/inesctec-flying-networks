@@ -96,12 +96,12 @@ def build_model_structure(scenarios, results, list_scenarios, list_topologies):
     index_scenario = 0
     for scenario_id in list_scenarios:
         scenario_begin_index = (scenario_id - 1) * SCENARIO_TOPOLOGIES_NO
-        scenario_matrix = datarate_matrix(scenarios[scenario_id - 1])
+        scenario_matrix = normalize_matrix(datarate_matrix(scenarios[scenario_id - 1]))
         for topology_id in list_topologies[index_scenario]:
             index_results = scenario_begin_index + topology_id - 1
-            topology_matrix = drones_matrix(results.loc[index_results])
+            topology_matrix = normalize_sparse_topology(drones_matrix(results.loc[index_results]))
             if(DISTANCE_ENCODING == 1):
-                topology_matrix = sparse_to_distance(topology_matrix)
+                topology_matrix = normalize_matrix(sparse_to_distance(drones_matrix(results.loc[index_results])))
             model_struct_orig.append([scenario_matrix, topology_matrix])
         index_scenario += 1
     #Then the topologies with a 90 rotation
