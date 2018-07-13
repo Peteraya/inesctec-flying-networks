@@ -2,6 +2,7 @@ import sys
 import os
 from load_data import *
 from data_preprocess import *
+from model import *
 
 
 abs_path = os.path.abspath(os.path.dirname(__file__))
@@ -22,9 +23,9 @@ if DIVISION_BY_TOPOLOGIES:
 	topologie_list_test = aux_topologie_list[1]
 	list_scenarios = list(range(1,(SCENARIOS_NO+1)))
 
-	train_matrix = build_model_structure(scenarios, results, list_scenarios, topologie_list_train)
-	validation_matrix = build_model_structure(scenarios, results, list_scenarios, topologie_list_validation)
-	test_matrix = build_model_structure(scenarios, results, list_scenarios, topologie_list_test)
+	train_matrix, qualities_train = build_model_structure(scenarios, results, list_scenarios, topologie_list_train)
+	validation_matrix, qualities_validation = build_model_structure(scenarios, results, list_scenarios, topologie_list_validation)
+	test_matrix, qualities_test = build_model_structure(scenarios, results, list_scenarios, topologie_list_test)
 
 
 else:
@@ -32,6 +33,13 @@ else:
 	for index in range(10):
 		topologies_list.append(list(range(1,(SCENARIO_TOPOLOGIES_NO+1))))
 
-	train_matrix = build_model_structure(scenarios, results, SCENARIOS_TRAINING, topologies_list)
-	validation_matrix = build_model_structure(scenarios, results, SCENARIOS_VALIDATION, topologies_list)
-	test_matrix = build_model_structure(scenarios, results, SCENARIOS_TEST, topologies_list)
+	train_matrix, qualities_train = build_model_structure(scenarios, results, SCENARIOS_TRAINING, topologies_list)
+	validation_matrix, qualities_validation = build_model_structure(scenarios, results, SCENARIOS_VALIDATION, topologies_list)
+	test_matrix, qualities_test = build_model_structure(scenarios, results, SCENARIOS_TEST, topologies_list)
+
+
+model = build_model()
+model.compile(optimizer = "adam", loss="mse", accuracy="rmse")
+
+
+#model.fit(train_matrix, y_train,epochs=20, batch_size=1, verbose=1)

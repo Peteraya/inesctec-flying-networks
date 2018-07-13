@@ -22,10 +22,10 @@ def build_model():
 
     #output layers
     output = Dense(1, activation='sigmoid')(hidden2)
-    model = Model(inputs=visible, outputs=[output])
-    print(model.summary())
+    model = Model(inputs=visible, outputs=output)
+    
     plot_model(model, to_file='../DataSet/model.png')
-    model.compile(optimizer = "adam", loss="mse", accuracy="rmse")
+    #model.compile(optimizer = "adam", loss="mse", accuracy="rmse")
     return model
 
 
