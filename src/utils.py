@@ -96,13 +96,15 @@ def normalize_matrix(matrix):
         for j in range(len(matrix[0])):
             sum += matrix[i][j]
     
-    mean = sum / (len(matrix) * len(matrix[0]))
+    matrix_noElems = len(matrix) * len(matrix[0])
+    mean = sum / matrix_noElems
     sum_std = 0
     for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
+        for j in range(len(matrix[i])):
             sum_std += (matrix[i][j] - mean)*(matrix[i][j] - mean)
-    std = math.sqrt(sum_std)
-
+  
+    std = math.sqrt(sum_std / matrix_noElems)
+    print(std)
     for i in range(len(matrix)):
        for j in range(len(matrix[0])):
            new_matrix[i][j] = (matrix[i][j] - mean) / std
