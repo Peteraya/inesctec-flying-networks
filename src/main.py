@@ -1,5 +1,6 @@
 import sys
 import os
+import numpy as np
 from load_data import *
 from data_preprocess import *
 from model import *
@@ -41,5 +42,17 @@ else:
 model = build_model()
 model.compile(optimizer = "adam", loss="mse", accuracy="rmse")
 
+train_matrix = np.array(train_matrix)
+throughput_train, delay_train, jitter_train, pdr_train = separate_qualities(qualities_train)
+throughput_train, delay_train, jitter_train, pdr_train = np.array(throughput_train), np.array(delay_train), np.array(jitter_train), np.array(pdr_train)
 
-#model.fit(train_matrix, y_train,epochs=20, batch_size=1, verbose=1)
+validation_matrix = np.array(validation_matrix)
+throughput_validation, delay_validation, jitter_validation, pdr_validation = separate_qualities(qualities_validation)
+throughput_validation, delay_validation, jitter_validation, pdr_validation = np.array(throughput_validation), np.array(delay_validation), np.array(jitter_validation), np.array(pdr_validation)
+
+test_matrix = np.array(test_matrix)
+throughput_test, delay_test, jitter_test, pdr_test = separate_qualities(qualities_test)
+throughput_test, delay_test, jitter_test, pdr_test = np.array(throughput_test), np.array(delay_test), np.array(jitter_test), np.array(pdr_test)
+
+
+#model.fit(train_matrix, throughput_train, epochs=5, batch_size=1, verbose=1)

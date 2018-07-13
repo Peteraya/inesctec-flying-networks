@@ -140,3 +140,19 @@ def normalize_sparse_topology(matrix):
             new_matrix[i][j] = (matrix[i][j] - mean)/std
 
     return new_matrix
+
+
+def separate_qualities(qualities_list):
+    throughput = []
+    delay = []
+    jitter = []
+    pdr = []
+
+    for index in range(len(qualities_list)):
+        throughput.append(qualities_list[index][0])
+        delay.append(qualities_list[index][1])
+        jitter.append(qualities_list[index][2])
+        pdr.append(qualities_list[index][3])
+
+
+    return throughput, delay, jitter, pdr
