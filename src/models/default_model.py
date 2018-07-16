@@ -10,18 +10,18 @@ class DefaultModel(BaseModel):
     
     def __init__(self):
         #input layer
-        visible = Input(shape=(2,10,10))
+        visible = Input(shape=(2,10, 10))
 
-        conv1 = Conv2D(32, kernel_size=1, activation='relu')(visible)
-        pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
-        conv2 = Conv2D(16, kernel_size=1, activation='relu')(pool1)
-        pool2 = MaxPooling2D(pool_size=(1, 1))(conv2)
-        flat = Flatten()(pool2)
-        hidden1 = Dense(10, activation='relu')(flat)
-        hidden2 = Dense(10, activation='relu')(hidden1)
+        conv1 = Conv2D(32, kernel_size=1, data_format = "channels_first", activation='relu')(visible)
+        pool1 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv1)
+        conv2 = Conv2D(16, kernel_size=1, data_format = "channels_first", activation='relu')(pool1)
+        pool2 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv2)
+        flat = Flatten(data_format = "channels_first")(pool2)
+        hidden1 = Dense(10, activation='relu', use_bias = True, kernel_initializer='random_uniform', bias_initializer='zeros')(flat)
+        hidden2 = Dense(10, activation='relu', use_bias = True, kernel_initializer='random_uniform', bias_initializer='zeros')(hidden1)
 
         #output layers
-        output = Dense(1, activation='sigmoid')(hidden2)
+        output = Dense(1, activation='sigmoid', kernel_initializer='random_uniform', bias_initializer='zeros')(hidden2)
         model = Model(inputs=visible, outputs=output)
     
         
@@ -30,4 +30,4 @@ class DefaultModel(BaseModel):
 
         self.print_model( "default_model.png")
 
-        self.model.compile(optimizer = "adam", loss="mse", metrics=['mae'])
+        self.model.compile(optimizer = "rmsprop", loss="mse", metrics=['mae'])
