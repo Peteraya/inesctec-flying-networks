@@ -1,4 +1,4 @@
-import numpy as np 
+import numpy as np
 np.random.seed(1337)
 
 from keras.utils import plot_model
@@ -35,6 +35,7 @@ class DefaultModel(BaseModel):
         #model.compile(optimizer = "adam", loss="mse", accuracy="rmse")
         self.model = model
 
+        
         self.print_model( "default_model.png")
         rmsprop = RMSprop(lr=0.01)
         self.model.compile(optimizer = rmsprop, loss="mse", metrics=['mae'])

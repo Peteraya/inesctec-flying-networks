@@ -13,7 +13,6 @@ def create_results(dataset_directory):
     results_list = []
     for index_scn in range(SCENARIOS_NO):
         new_path = path + str(index_scn+1)+'/'
-        print(new_path)
         list_scenario = []
         for index in range(SCENARIO_TOPOLOGIES_NO):
             allFiles = glob.glob(new_path + "/Results-"+str(index + 1)+"-*.csv")
