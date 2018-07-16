@@ -110,6 +110,25 @@ def normalize_matrix(matrix):
     return new_matrix
 
 
+def normalize_qualities(matrix):
+    new_matrix = np.empty((len(matrix)), dtype='float')
+    sum = 0
+    print(matrix)
+    for i in range(len(matrix)):
+        sum += matrix[i]
+    
+    matrix_noElems = len(matrix)
+    mean = sum / matrix_noElems
+    sum_std = 0
+    for i in range(len(matrix)):
+        sum_std += (matrix[i] - mean)*(matrix[i] - mean)
+  
+    std = math.sqrt(sum_std / matrix_noElems)
+    for i in range(len(matrix)):
+        new_matrix[i] = (matrix[i] - mean) / std
+    return new_matrix   
+
+
 def build_topologie_train_list(scenarios):
 
     top_list = []
