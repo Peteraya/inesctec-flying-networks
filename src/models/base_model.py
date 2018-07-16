@@ -13,7 +13,7 @@ class BaseModel:
 
     def run(self, train_matrix, train_y, validation_matrix, validation_y, variable_name):
     
-        self.model.fit(train_matrix, train_y, epochs=10, batch_size=1, verbose=1)
+        self.model.fit(train_matrix, train_y, epochs=20, batch_size=1, verbose=1)
 
         #y_pred = model.predict(test_matrix)
 

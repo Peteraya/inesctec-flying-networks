@@ -32,3 +32,26 @@ class DefaultModel(BaseModel):
         self.print_model( "default_model.png")
         rmsprop = RMSprop(lr=0.01)
         self.model.compile(optimizer = rmsprop, loss="mse", metrics=['mae'])
+
+'''
+Results (20 Epochs):
+Train throughput: loss: 0.6991 - mean_absolute_error: 0.6084
+Validation score throughput:  [0.440195030272007, 0.5478442540764809]
+
+Settings:
+#Global Variables
+SCENARIO_ROWS = 10
+SCENARIO_COLUMNS = 10
+SCENARIO_TOPOLOGIES_NO = 200
+SCENARIOS_NO = 10
+TOPOLOGIES_TRAINING = 128
+TOPOLOGIES_VALIDATION = 32
+TOPOLOGIES_TESTING = 40
+SCENARIOS_TRAINING = [1, 2, 4, 6, 7, 10]
+SCENARIOS_VALIDATION = [5, 9]
+SCENARIOS_TEST = [3, 8]
+DIVISION_BY_TOPOLOGIES = 0
+DISTANCE_ENCODING = 0
+NORMALIZE_DATA = 0
+USE_TRANSFORMATIONS = 1
+'''
