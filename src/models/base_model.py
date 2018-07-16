@@ -4,6 +4,7 @@ from keras.utils import plot_model
 from keras.models import Model
 from keras.callbacks import ModelCheckpoint
 import numpy as np
+import matplotlib.pyplot as plt
 from abc import ABCMeta, abstractmethod
 
 class BaseModel:
@@ -25,9 +26,25 @@ class BaseModel:
 
         checkpointer = ModelCheckpoint(filepath='../DataSet/Checkpoints/checkpoint' + str(fileId) + ".hdf5", verbose=1, save_best_only=True)
     
-        self.model.fit(train_matrix, train_y, epochs=10, batch_size=128, verbose=1, validation_split=0.2, shuffle=True,callbacks=[checkpointer])
-
-        #y_pred = model.predict(test_matrix)
+        history = self.model.fit(train_matrix, train_y, epochs=10, batch_size=128, verbose=1, validation_split=0.2, shuffle=True,callbacks=[checkpointer])
+        # list all data in history
+        print(history.history.keys())
+        # summarize history for mean absolute error
+        plt.plot(history.history['mean_absolute_error'])
+        plt.plot(history.history['val_mean_absolute_error'])
+        plt.title('model mae')
+        plt.ylabel('mae')
+        plt.xlabel('epoch')
+        plt.legend(['train', 'validation'], loc='upper left')
+        plt.show()
+        # summarize history for loss
+        plt.plot(history.history['loss'])
+        plt.plot(history.history['val_loss'])
+        plt.title('model loss')
+        plt.ylabel('loss')
+        plt.xlabel('epoch')
+        plt.legend(['train', 'validation'], loc='upper left')
+        plt.show()
 
         score_valid = self.model.evaluate(validation_matrix, validation_y,verbose=1)
         print("----------------------------------------------------")
