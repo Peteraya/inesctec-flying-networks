@@ -1,3 +1,6 @@
+import numpy as np 
+np.random.seed(1337)
+
 from keras.utils import plot_model
 from keras.layers import Input
 from keras.layers import Dense
@@ -18,11 +21,11 @@ class DefaultModel(BaseModel):
         conv2 = Conv2D(16, kernel_size=1, data_format = "channels_first", activation='relu')(pool1)
         pool2 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv2)
         flat = Flatten(data_format = "channels_first")(pool2)
-        hidden1 = Dense(10, activation='sigmoid', use_bias = True, kernel_initializer='random_uniform', bias_initializer='zeros')(flat)
-        hidden2 = Dense(10, activation='sigmoid', use_bias = True, kernel_initializer='random_uniform', bias_initializer='zeros')(hidden1)
+        hidden1 = Dense(10, activation='sigmoid', kernel_initializer='normal')(flat)
+        hidden2 = Dense(10, activation='sigmoid', kernel_initializer='normal')(hidden1)
 
         #output layers
-        output = Dense(1, activation='relu', use_bias = True, kernel_initializer='random_uniform', bias_initializer='zeros')(hidden2)
+        output = Dense(1, activation='relu', kernel_initializer='normal')(hidden2)
         model = Model(inputs=visible, outputs=output)
     
         
