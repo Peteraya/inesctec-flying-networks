@@ -64,7 +64,7 @@ def drones_matrix(results_line):
     drone2_y = int(results_line.loc['fmap2CoordinatesY'])
     drone3_x = int(results_line.loc['fmap3CoordinatesX'])
     drone3_y = int(results_line.loc['fmap3CoordinatesY'])
-    quality_items = [float(results_line.loc['meanRxBitrateMbps']),(float(results_line.loc['meanDelayMs']))/500.0,
+    quality_items = [float(results_line.loc['meanRxBitrateMbps']),float(results_line.loc['meanDelayMs']),
     float(results_line.loc['meanJitterMs']),float(results_line.loc['meanPdr'])]
     matrix[drone1_x][drone1_y] = 1
     matrix[drone2_x][drone2_y] = 1

@@ -50,7 +50,7 @@ throughput_validation, delay_validation, jitter_validation, pdr_validation = np.
 
 model = DefaultModel()
 
-model.run(train_matrix, throughput_train, validation_matrix, throughput_validation, "throughput")
-model.run(train_matrix, delay_train, validation_matrix, delay_validation, "delay")
-model.run(train_matrix, jitter_train, validation_matrix, jitter_validation, "jitter")
-model.run(train_matrix, pdr_train, validation_matrix, pdr_validation, "pdr")
+#model.run(train_matrix, throughput_train, validation_matrix, throughput_validation, "Throughput")
+model.run(train_matrix, delay_train, validation_matrix, delay_validation, "Delay")
+#model.run(train_matrix, jitter_train, validation_matrix, jitter_validation, "Jitter")
+#model.run(train_matrix, pdr_train, validation_matrix, pdr_validation, "Pdr")
