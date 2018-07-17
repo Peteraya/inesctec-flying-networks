@@ -98,14 +98,14 @@ def build_model_structure(scenarios, results, list_scenarios, list_topologies):
         scenario_begin_index = (scenario_id - 1) * SCENARIO_TOPOLOGIES_NO
         scenario_matrix = datarate_matrix(scenarios[scenario_id - 1])
         if(NORMALIZE_DATA == 1):
-            scenario_matrix = normalize_matrix(scenario_matrix)
+            mean, std = stats_matrix(scenario_matrix)
         for topology_id in list_topologies[index_scenario]:
             index_results = scenario_begin_index + topology_id - 1
             topology_matrix, qualities_list = drones_matrix(results.loc[index_results])
             if(DISTANCE_ENCODING == 1):
                 topology_matrix = sparse_to_distance(topology_matrix)
             if(NORMALIZE_DATA == 1):
-                topology_matrix = normalize_matrix(topology_matrix)
+                topology_matrix = adjust_matrix(topology_matrix, mean, std)
             model_struct_orig.append([scenario_matrix, topology_matrix])
             model_prediction.append(qualities_list)
         index_scenario += 1
@@ -139,6 +139,7 @@ def normalize_sparse_topology(matrix):
             new_matrix[i][j] = (matrix[i][j] - mean)/std
 
     return new_matrix
+
 
 
 def separate_qualities(qualities_list):

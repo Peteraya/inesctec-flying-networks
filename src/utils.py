@@ -89,6 +89,31 @@ def sparse_to_distance(sparse_matrix):
 
     return distance_matrix
 
+def stats_matrix(matrix):
+    sum = 0
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            sum += matrix[i][j]
+    
+    matrix_noElems = len(matrix) * len(matrix[0])
+    mean = sum / matrix_noElems
+    sum_std = 0
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            sum_std += (matrix[i][j] - mean)*(matrix[i][j] - mean)
+  
+    std = math.sqrt(sum_std / matrix_noElems)
+
+    return mean, std
+
+def adjust_matrix(matrix, mean, std):
+    new_matrix = np.empty((len(matrix), len(matrix[0])), dtype='float')
+    
+    for i in range(len(matrix)):
+       for j in range(len(matrix[0])):
+           new_matrix[i][j] = (matrix[i][j] - mean) / std
+    return new_matrix
+
 def normalize_matrix(matrix):
     new_matrix = np.empty((len(matrix), len(matrix[0])), dtype='float')
     sum = 0
