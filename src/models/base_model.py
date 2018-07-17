@@ -23,10 +23,16 @@ class BaseModel:
             allFiles = glob.glob("../DataSet/Checkpoints/checkpoint*.hdf5")
             fileId = len(allFiles)+1
 
+        if not(os.path.exists("../DataSet/Plots/"+variable_name)):
+            plotId = 1
+        else:
+            allFiles = glob.glob("../DataSet/Plots"+variable_name+"/plot*")
+            plotId = int(len(allFiles)/2) + 1
+
 
         checkpointer = ModelCheckpoint(filepath='../DataSet/Checkpoints/checkpoint' + str(fileId) + ".hdf5", verbose=1, save_best_only=True)
     
-        history = self.model.fit(train_matrix, train_y, epochs=10, batch_size=128, verbose=1, validation_split=0.2, shuffle=True,callbacks=[checkpointer])
+        history = self.model.fit(train_matrix, train_y, epochs=100, batch_size=128, verbose=1, validation_split=0.2, shuffle=True,callbacks=[checkpointer])
         # list all data in history
         print(history.history.keys())
         # summarize history for mean absolute error
@@ -36,6 +42,7 @@ class BaseModel:
         plt.ylabel('mae')
         plt.xlabel('epoch')
         plt.legend(['train', 'validation'], loc='upper left')
+        plt.savefig('../DataSet/Plots/' + variable_name + '/plot' + str(plotId) + "_mae.png")
         plt.show()
         # summarize history for loss
         plt.plot(history.history['loss'])
@@ -44,6 +51,7 @@ class BaseModel:
         plt.ylabel('loss')
         plt.xlabel('epoch')
         plt.legend(['train', 'validation'], loc='upper left')
+        plt.savefig('../DataSet/Plots/' + variable_name + '/plot' + str(plotId) + "_loss.png")
         plt.show()
 
         score_valid = self.model.evaluate(validation_matrix, validation_y,verbose=1)
