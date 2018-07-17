@@ -106,12 +106,12 @@ def stats_matrix(matrix):
 
     return mean, std
 
-def adjust_matrix(matrix, mean, std):
+def adjust_matrix(matrix, new_mean, new_std):
     new_matrix = np.empty((len(matrix), len(matrix[0])), dtype='float')
-    
+    mean, std = stats_matrix(matrix)
     for i in range(len(matrix)):
        for j in range(len(matrix[0])):
-           new_matrix[i][j] = (matrix[i][j] - mean) / std
+           new_matrix[i][j] = ((matrix[i][j] - mean) / std) * new_std + new_mean
     return new_matrix
 
 def normalize_matrix(matrix):

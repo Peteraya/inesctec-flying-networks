@@ -13,7 +13,16 @@ class BaseModel:
         pass
 
     def print_model(self, filename):
-        plot_model(self.model, to_file = '../../DataSet'+filename)
+        plot_model(self.model, to_file = '../DataSet/'+filename)
+    
+    def save_json(self, variable_name):
+        allFiles = glob.glob("../DataSet/Models-json/model_"+variable_name+"*.json")
+        new_id = len(allFiles) + 1
+        model_json = self.model.to_json() 
+        with open("../DataSet/Models-json/model_"+variable_name+str(new_id)+".json", "w+") as json_file:
+            json_file.write(model_json)
+
+
 
     def run(self, train_matrix, train_y, validation_matrix, validation_y, variable_name):
 
@@ -26,13 +35,14 @@ class BaseModel:
         if not(os.path.exists("../DataSet/Plots/"+variable_name)):
             plotId = 1
         else:
-            allFiles = glob.glob("../DataSet/Plots"+variable_name+"/plot*")
+            allFiles = glob.glob("../DataSet/Plots/"+variable_name+"/plot*")
             plotId = int(len(allFiles)/2) + 1
 
 
         checkpointer = ModelCheckpoint(filepath='../DataSet/Checkpoints/checkpoint' + str(fileId) + ".hdf5", verbose=1, save_best_only=True)
     
-        history = self.model.fit(train_matrix, train_y, epochs=100, batch_size=128, verbose=1, validation_split=0.2, shuffle=True,callbacks=[checkpointer])
+        history = self.model.fit(train_matrix, train_y, epochs=5, batch_size=128, verbose=1, validation_data = (validation_matrix, validation_y), shuffle=True,callbacks=[checkpointer])
+        self.save_json(variable_name)
         # list all data in history
         print(history.history.keys())
         # summarize history for mean absolute error

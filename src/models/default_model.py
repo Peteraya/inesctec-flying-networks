@@ -32,7 +32,6 @@ class DefaultModel(BaseModel):
         model = Model(inputs=visible, outputs=output)
     
         
-        #model.compile(optimizer = "adam", loss="mse", accuracy="rmse")
         self.model = model
 
         
@@ -40,3 +39,4 @@ class DefaultModel(BaseModel):
         rmsprop = RMSprop(lr=0.01)
         self.model.compile(optimizer = rmsprop, loss="mse", metrics=['mae'])
         self.model.summary()
+        
