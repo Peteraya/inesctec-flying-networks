@@ -13,3 +13,7 @@ DIVISION_BY_TOPOLOGIES = 0
 DISTANCE_ENCODING = 1
 NORMALIZE_DATA = 1
 USE_TRANSFORMATIONS = 1
+
+
+def quality(throughput, delay, pdr):
+    return throughput - delay / 500 +pdr

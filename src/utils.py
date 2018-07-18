@@ -134,6 +134,13 @@ def normalize_matrix(matrix):
            new_matrix[i][j] = (matrix[i][j] - mean) / std
     return new_matrix
 
+def matrix_multiply_add(matrix, new_mean, new_std):
+    new_matrix = np.empty((len(matrix), len(matrix[0])), dtype='float')
+    for i in range(len(matrix)):
+       for j in range(len(matrix[0])):
+           new_matrix[i][j] = matrix[i][j] * new_std + new_mean
+    return new_matrix
+
 
 def normalize_qualities(matrix):
     new_matrix = np.empty((len(matrix)), dtype='float')
