@@ -55,8 +55,8 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, mean
     current_value = value(model_throughput, model_delay, model_pdr, scenario, topology)
     best_topology = np.copy(topology)
     best_value = current_value
-    T = 10000
-    while(T > 0):
+    temperature = 10000
+    while(temperature > 0):
         new_drones = adjacent_state(drones, nrows, ncolumns)
         new_topology = get_topology(new_drones, mean, std, nrows, ncolumns)
         new_value = value(model_throughput, model_delay, model_pdr, scenario, new_topology)
@@ -68,7 +68,7 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, mean
                 best_value = current_value
                 best_topology = np.copy(topology)
         else:
-            probability = exp(diff)
+            probability = exp(diff) / temperature
             random_float = random()
             if(random_float < probability):
                 topology = np.copy(new_topology)
@@ -76,6 +76,7 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, mean
                 if(current_value > best_value):
                     best_value = current_value
                     best_topology = np.copy(topology)
+        temperature -= 1
 
     return best_topology
 
