@@ -1,4 +1,5 @@
 from utils import *
+from math import *
 
 def valid_position(position, nrows, ncolumns):
     if(position[0] < 0 or position[1] < 0):
@@ -9,7 +10,7 @@ def valid_position(position, nrows, ncolumns):
         return True
 
 def adjacent_position(position, nrows, ncolumns):
-    new_position = random(0, 4)
+    new_position = randint(0, 3)
     position_selected = False
 
     while(True):
@@ -25,7 +26,7 @@ def adjacent_position(position, nrows, ncolumns):
 
 def adjacent_state(drones, nrows, ncolumns):
     new_drones = drones.copy() #TODO: CHECK THAT THIS IS CORRECT
-    drone_index = random(0, 3)
+    drone_index = randint(0, len(drones) - 1)
     new_drones[drone_index] = adjacent_position(drones[drone_index], nrows, ncolumns)
     return new_drones
 
@@ -54,8 +55,28 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, mean
     current_value = value(model_throughput, model_delay, model_pdr, scenario, topology)
     best_topology = np.copy(topology)
     best_value = current_value
-    for i in range(0, 10000):
+    T = 10000
+    while(T > 0):
         new_drones = adjacent_state(drones, nrows, ncolumns)
         new_topology = get_topology(new_drones, mean, std, nrows, ncolumns)
+        new_value = value(model_throughput, model_delay, model_pdr, scenario, new_topology)
+        diff = new_value - current_value
+        if(diff >= 0):
+            topology = np.copy(new_topology)
+            current_value = new_value
+            if(current_value > best_value):
+                best_value = current_value
+                best_topology = np.copy(topology)
+        else:
+            probability = exp(diff)
+            random_float = random()
+            if(random_float < probability):
+                topology = np.copy(new_topology)
+                current_value = new_value
+                if(current_value > best_value):
+                    best_value = current_value
+                    best_topology = np.copy(topology)
+
+    return best_topology
 
 

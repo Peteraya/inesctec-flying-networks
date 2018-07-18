@@ -32,6 +32,7 @@ def save_topologies_to_json():
 def load_topologies_from_json():
     json_file = open("../DataSet/topologies.json", "r")
     topologies = json_file.read()
+    return topologies
 
 
 def load_models():
@@ -84,5 +85,6 @@ line1 = np.array([3, 0, 0, 3, 0, 0, 3, 0, 0, 3])
 line2 = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 scenario = np.array([line1, line2, line2, line1, line2, line2, line1, line2, line2, line1])
 model_throughput, model_delay, model_pdr = load_models()
-topology = best_topology_brute_force(model_throughput, model_delay, model_pdr, scenario)
+topologies = load_topologies_from_json()
+topology = best_topology_brute_force(model_throughput, model_delay, model_pdr, scenario, topologies)
 print(topology)
