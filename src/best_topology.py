@@ -1,37 +1,41 @@
 import numpy as np
 from settings import *
 from utils import *
+from simulated_annealing import *
 from keras.models import model_from_json
+import codecs, json
 
 
 def save_topologies_to_json():
     topology = np.zeros((10, 10), dtype = 'float')
     topologies = []
-    for d_1i in range(0, 10):
+    SIZE = 2
+    for d_1i in range(0, SIZE):
         print(str(d_1i)+"\n")
-        for d_1j in range(0, 10):
+        for d_1j in range(0, SIZE):
             topology[d_1i][d_1j] = 1
             print("    "+str(d_1j)+"\n") 
-            for d_2i in range(0, 10):
-                for d_2j in range(0, 10):
+            for d_2i in range(0, SIZE):
+                for d_2j in range(0, SIZE):
                     topology[d_2i][d_2j] = 1 
-                    for d_3i in range(0, 10):
-                        for d_3j in range(0, 10):
+                    for d_3i in range(0, SIZE):
+                        for d_3j in range(0, SIZE):
                             topology[d_3i][d_3j] = 1
                             if(DISTANCE_ENCODING == 1):
                                 topology = sparse_to_distance(topology)
                             if(NORMALIZE_DATA == 1):
                                 topology = normalize_matrix(topology)
-                            topologies.append(topology)    
+                            topology = round_matrix(topology, 4)
+                            topologies.append(topology.tolist())    
                             topology = np.zeros((10, 10), dtype = 'float')
-    with open("../DataSet/topologies.json", "w+") as json_file:
-        json_file.write(topologies)                        
+    json.dump(topologies, codecs.open("../DataSet/topologies.json", 'w', encoding='utf-8'), separators=(',',':'), sort_keys=True, indent=4)
+    return topologies                       
 
     
 
 def load_topologies_from_json():
-    json_file = open("../DataSet/topologies.json", "r")
-    topologies = json_file.read()
+    json_file = codecs.open("../DataSet/topologies.json", 'r', encoding='utf-8').read()
+    topologies = json.loads(json_file)
     return topologies
 
 
@@ -66,10 +70,6 @@ def best_topology_brute_force(model_throughput, model_delay, model_pdr, scenario
     
     return best_topology(model_throughput, model_delay, model_pdr, scenario_topologies_list)
 
-def best_topology_simulated_annealing():
-    #TODO: IMPLEMENT
-    pass
-
 def best_topology(model_throughput, model_delay, model_pdr, scenario_topologies_list):
 
     throughput_pred = model_throughput.predict(scenario_topologies_list)
@@ -81,10 +81,11 @@ def best_topology(model_throughput, model_delay, model_pdr, scenario_topologies_
     topology_index = np.array(quality_pred).argmax(axis = 0)
     return scenario_topologies_list[topology_index][1]
 
-line1 = np.array([3, 0, 0, 3, 0, 0, 3, 0, 0, 3])
-line2 = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-scenario = np.array([line1, line2, line2, line1, line2, line2, line1, line2, line2, line1])
-model_throughput, model_delay, model_pdr = load_models()
-topologies = load_topologies_from_json()
-topology = best_topology_brute_force(model_throughput, model_delay, model_pdr, scenario, topologies)
-print(topology)
+def test_best_topology():
+    line1 = np.array([3, 0, 0, 3, 0, 0, 3, 0, 0, 3])
+    line2 = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+    scenario = np.array([line1, line2, line2, line1, line2, line2, line1, line2, line2, line1])
+    model_throughput, model_delay, model_pdr = load_models()
+    initial_drones = [[1.0, 1.0], [4.0, 4.0], [7.0, 7.0]]
+    topology = simulated_annealing(model_throughput, model_delay, model_pdr, scenario, initial_drones)
+    print(topology)

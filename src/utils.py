@@ -141,25 +141,12 @@ def matrix_multiply_add(matrix, new_mean, new_std):
            new_matrix[i][j] = matrix[i][j] * new_std + new_mean
     return new_matrix
 
-
-def normalize_qualities(matrix):
-    new_matrix = np.empty((len(matrix)), dtype='float')
-    sum = 0
-    print(matrix)
+def round_matrix(matrix, decimal_points):
+    new_matrix = np.empty((len(matrix), len(matrix[0])), dtype='float')
     for i in range(len(matrix)):
-        sum += matrix[i]
-    
-    matrix_noElems = len(matrix)
-    mean = sum / matrix_noElems
-    sum_std = 0
-    for i in range(len(matrix)):
-        sum_std += (matrix[i] - mean)*(matrix[i] - mean)
-  
-    std = math.sqrt(sum_std / matrix_noElems)
-    for i in range(len(matrix)):
-        new_matrix[i] = (matrix[i] - mean) / std
-    return new_matrix   
-
+       for j in range(len(matrix[0])):
+           new_matrix[i][j] = round(matrix[i][j], decimal_points)
+    return new_matrix
 
 def build_topologie_train_list(scenarios):
 
