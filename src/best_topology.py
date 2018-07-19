@@ -87,5 +87,5 @@ def test_best_topology():
     scenario = np.array([line1, line2, line2, line1, line2, line2, line1, line2, line2, line1])
     model_throughput, model_delay, model_pdr = load_models()
     initial_drones = [[1.0, 1.0], [4.0, 4.0], [7.0, 7.0]]
-    topology = simulated_annealing(model_throughput, model_delay, model_pdr, scenario, initial_drones)
+    topology, quality, drones = simulated_annealing(model_throughput, model_delay, model_pdr, scenario, initial_drones)
     print(topology)
