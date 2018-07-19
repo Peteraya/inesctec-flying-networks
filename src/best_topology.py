@@ -89,3 +89,5 @@ def test_best_topology():
     initial_drones = [[1.0, 1.0], [4.0, 4.0], [7.0, 7.0]]
     topology, quality, drones = simulated_annealing(model_throughput, model_delay, model_pdr, scenario, initial_drones)
     print(topology)
+    print(quality)
+    print(drones)

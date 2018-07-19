@@ -1,6 +1,9 @@
 from utils import *
 from math import *
 import numpy as np
+import random
+import time
+random.seed(time.time())
 
 def valid_position(position, nrows, ncolumns):
     if(position[0] < 0 or position[1] < 0):
@@ -33,16 +36,16 @@ def adjacent_state(drones, nrows, ncolumns):
 
 def value(model_throughput, model_delay, model_pdr, scenario, topology):
 
-    scenario_topologies_list = [[scenario, topology]]
+    scenario_topologies_list = np.array([np.array([scenario, topology])])
     throughput_pred = model_throughput.predict(scenario_topologies_list)
     delay_pred = model_delay.predict(scenario_topologies_list)
     pdr_pred = model_pdr.predict(scenario_topologies_list)
-    return quality(throughput_pred[0], delay_pred[0], pdr_pred[0])
+    return quality(throughput_pred[0][0], delay_pred[0][0], pdr_pred[0][0])
 
 def get_topology(drones, mean, std, nrows, ncolumns):
     topology = np.zeros((nrows, ncolumns))
     for i in range(0, len(drones)):
-        topology[drones[i][0]][drones[i][1]] = 1
+        topology[int(drones[i][0])][int(drones[i][1])] = 1
     if(DISTANCE_ENCODING == 1):
         topology = sparse_to_distance(topology)
     if(NORMALIZE_DATA == 1):
@@ -56,11 +59,13 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, dron
     topology = get_topology(drones, mean, std, nrows, ncolumns)
     current_value = value(model_throughput, model_delay, model_pdr, scenario, topology)
     best_topology = np.copy(topology)
+    best_drones = drones.copy()
     best_value = current_value
     temperature = 10000
     while(temperature > 0):
         print("Temperature: "+str(temperature))
         print(drones)
+        print(current_value)
         print("\n")
         new_drones = adjacent_state(drones, nrows, ncolumns)
         new_topology = get_topology(new_drones, mean, std, nrows, ncolumns)
@@ -73,9 +78,10 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, dron
             if(current_value > best_value):
                 best_value = current_value
                 best_topology = np.copy(topology)
+                best_drones = drones.copy()
         else:
-            probability = exp(diff/temperature) 
-            random_float = random()
+            probability = exp(10000*diff/temperature) 
+            random_float = random.random()
             if(random_float < probability):
                 topology = np.copy(new_topology)
                 current_value = new_value
@@ -83,8 +89,9 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, dron
                 if(current_value > best_value):
                     best_value = current_value
                     best_topology = np.copy(topology)
+                    best_drones = drones.copy()
         temperature -= 1
 
-    return best_topology, best_value, drones
+    return best_topology, best_value, best_drones
 
 
