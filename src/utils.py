@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import math
+import os, glob
+import codecs, json
 from settings import *
 from random import *
 
@@ -175,5 +177,33 @@ def build_topologie_validation_n_test_list(train_list):
     return_list.append(test_list)
 
     return return_list
+
+
+def save_drones_to_json(drones_list):
+
+    drones = []
+
+    if not(os.path.exists("../DataSet/Topologies")):
+        fileId = 1
+    else:
+        allFiles = glob.glob("../DataSet/Topologies/best_top*.json")
+        fileId = len(allFiles)+1
+
+    filename = '../DataSet/Topologies/best_top_' + str(fileId) + '.json'
+
+    drones.append({"x" : drones_list[0][0] , "y" : drones_list[0][1] , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 36})
+    drones.append({"x" : drones_list[1][0] , "y" : drones_list[1][1] , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 40})
+    drones.append({"x" : drones_list[2][0] , "y" : drones_list[2][1] , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 44})
+
+    jsonString = json.dumps(drones, separators=('\t,\t', ' : '))
+
+    jsonString = jsonString.replace('[{', '[\n\t{ ')
+    jsonString = jsonString.replace('}\t,\t{', ' } ,\n\t{ ')
+    jsonString = jsonString.replace('}]', ' }\n]')
+
+    with open(filename, 'w') as f:
+        f.write(jsonString)
+    
+
 
 

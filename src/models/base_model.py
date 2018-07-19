@@ -41,7 +41,7 @@ class BaseModel:
 
         checkpointer = ModelCheckpoint(filepath='../DataSet/Checkpoints/checkpoint' + str(fileId) + ".hdf5", verbose=1, save_best_only=True)
     
-        history = self.model.fit(train_matrix, train_y, epochs=5, batch_size=128, verbose=1, validation_data = (validation_matrix, validation_y), shuffle=True,callbacks=[checkpointer])
+        history = self.model.fit(train_matrix, train_y, epochs=20, batch_size=128, verbose=1, validation_data = (validation_matrix, validation_y), shuffle=True,callbacks=[checkpointer])
         self.save_json(variable_name)
         # list all data in history
         print(history.history.keys())

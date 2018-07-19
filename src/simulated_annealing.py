@@ -1,5 +1,6 @@
 from utils import *
 from math import *
+import numpy as np
 
 def valid_position(position, nrows, ncolumns):
     if(position[0] < 0 or position[1] < 0):
@@ -39,7 +40,7 @@ def value(model_throughput, model_delay, model_pdr, scenario, topology):
     return quality(throughput_pred[0], delay_pred[0], pdr_pred[0])
 
 def get_topology(drones, mean, std, nrows, ncolumns):
-    topology = np.zeros(nrows, ncolumns)
+    topology = np.zeros((nrows, ncolumns))
     for i in range(0, len(drones)):
         topology[drones[i][0]][drones[i][1]] = 1
     if(DISTANCE_ENCODING == 1):
