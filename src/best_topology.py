@@ -68,10 +68,6 @@ def best_topology_brute_force(model_throughput, model_delay, model_pdr, scenario
             topologies[i] = matrix_multiply_add(topologies[i], mean, std)
         scenario_topologies_list.append([scenario, topologies[i]])
     
-    return best_topology(model_throughput, model_delay, model_pdr, scenario_topologies_list)
-
-def best_topology(model_throughput, model_delay, model_pdr, scenario_topologies_list):
-
     throughput_pred = model_throughput.predict(scenario_topologies_list)
     delay_pred = model_delay.predict(scenario_topologies_list)
     pdr_pred = model_pdr.predict(scenario_topologies_list)
@@ -80,6 +76,8 @@ def best_topology(model_throughput, model_delay, model_pdr, scenario_topologies_
     
     topology_index = np.array(quality_pred).argmax(axis = 0)
     return scenario_topologies_list[topology_index][1]
+
+
 
 def test_best_topology():
     line1 = np.array([3, 0, 0, 3, 0, 0, 3, 0, 0, 3])
