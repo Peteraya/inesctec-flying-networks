@@ -9,7 +9,7 @@ import codecs, json
 def save_topologies_to_json():
     topology = np.zeros((10, 10), dtype = 'float')
     topologies = []
-    SIZE = 2
+    SIZE = 10
     for d_1i in range(0, SIZE):
         print(str(d_1i)+"\n")
         for d_1j in range(0, SIZE):
@@ -78,6 +78,30 @@ def best_topology_brute_force(model_throughput, model_delay, model_pdr, scenario
     return scenario_topologies_list[topology_index][1]
 
 
+def save_drones_to_json(drones_list):
+
+    drones = []
+
+    if not(os.path.exists("../DataSet/Topologies-json")):
+        fileId = 1
+    else:
+        allFiles = glob.glob("../DataSet/Topologies-json/best_top*.json")
+        fileId = len(allFiles)+1
+
+    filename = '../DataSet/Topologies-json/best_top' + str(fileId) + '.json'
+
+    drones.append({"x" : drones_list[0][0]*30+15 , "y" : drones_list[0][1]*30+15 , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 36})
+    drones.append({"x" : drones_list[1][0]*30+15 , "y" : drones_list[1][1]*30+15 , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 40})
+    drones.append({"x" : drones_list[2][0]*30+15 , "y" : drones_list[2][1]*30+15 , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 44})
+
+    jsonString = json.dumps(drones, separators=('\t,\t', ' : '))
+
+    jsonString = jsonString.replace('[{', '[\n\t{ ')
+    jsonString = jsonString.replace('}\t,\t{', ' } ,\n\t{ ')
+    jsonString = jsonString.replace('}]', ' }\n]')
+
+    with open(filename, 'w') as f:
+        f.write(jsonString)
 
 def test_best_topology():
     line1 = np.array([3, 0, 0, 3, 0, 0, 3, 0, 0, 3])
@@ -86,6 +110,7 @@ def test_best_topology():
     model_throughput, model_delay, model_pdr = load_models()
     initial_drones = [[1.0, 1.0], [4.0, 4.0], [7.0, 7.0]]
     topology, quality, drones = simulated_annealing(model_throughput, model_delay, model_pdr, scenario, initial_drones)
+    save_drones_to_json(drones)
     print(topology)
     print(quality)
     print(drones)
