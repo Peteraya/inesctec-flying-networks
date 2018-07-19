@@ -4,6 +4,8 @@ from utils import *
 from simulated_annealing import *
 from keras.models import model_from_json
 import codecs, json
+from load_data import *
+from data_preprocess import *
 
 
 def save_topologies_to_json():
@@ -103,10 +105,15 @@ def save_drones_to_json(drones_list):
     with open(filename, 'w') as f:
         f.write(jsonString)
 
-def test_best_topology():
-    line1 = np.array([3, 0, 0, 3, 0, 0, 3, 0, 0, 3])
-    line2 = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-    scenario = np.array([line1, line2, line2, line1, line2, line2, line1, line2, line2, line1])
+def get_scenarios_list():
+    scenarios = read_scenarios(DATASET_DIRECTORY)
+    scenarios_list = []
+    for scenario in scenarios:
+        scenarios_list.append(datarate_matrix(scenario))
+    return scenarios_list
+
+def best_topology(scenario_id):
+    scenario = get_scenarios_list()[scenario_id-1]
     model_throughput, model_delay, model_pdr = load_models()
     initial_drones = [[1.0, 1.0], [4.0, 4.0], [7.0, 7.0]]
     topology, quality, drones = simulated_annealing(model_throughput, model_delay, model_pdr, scenario, initial_drones)

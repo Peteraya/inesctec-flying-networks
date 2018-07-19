@@ -1,3 +1,7 @@
+import sys
+import os
+import platform
+
 #Global Variables
 SCENARIO_ROWS = 10
 SCENARIO_COLUMNS = 10
@@ -17,3 +21,10 @@ USE_TRANSFORMATIONS = 1
 
 def quality(throughput, delay, pdr):
     return throughput - delay / 500 +pdr
+
+abs_path = os.path.abspath(os.path.dirname(__file__))
+
+if platform.system() == "Windows" :
+	DATASET_DIRECTORY =  "../DataSet"
+else:
+	DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")
