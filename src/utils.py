@@ -179,17 +179,11 @@ def build_topologie_validation_n_test_list(train_list):
     return return_list
 
 
-def save_drones_to_json(drones_list):
+def save_drones_to_json(drones_list,scenarioId):
 
     drones = []
 
-    if not(os.path.exists("../DataSet/Topologies")):
-        fileId = 1
-    else:
-        allFiles = glob.glob("../DataSet/Topologies/best_top*.json")
-        fileId = len(allFiles)+1
-
-    filename = '../DataSet/Topologies/best_top_' + str(fileId) + '.json'
+    filename = '../DataSet/Topologies/Fmaps-Topology-' + str(scenarioId) + '.json'
 
     drones.append({"x" : drones_list[0][0] , "y" : drones_list[0][1] , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 36})
     drones.append({"x" : drones_list[1][0] , "y" : drones_list[1][1] , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 40})

@@ -117,7 +117,7 @@ def best_topology(scenario_id):
     model_throughput, model_delay, model_pdr = load_models()
     initial_drones = [[1.0, 1.0], [4.0, 4.0], [7.0, 7.0]]
     topology, quality, drones = simulated_annealing(model_throughput, model_delay, model_pdr, scenario, initial_drones)
-    save_drones_to_json(drones)
+    save_drones_to_json(drones,scenario_id)
     print(topology)
     print(quality)
     print(drones)
