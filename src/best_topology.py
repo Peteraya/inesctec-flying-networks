@@ -93,9 +93,9 @@ def save_drones_to_json(drones_list,scenarioId):
 
     filename = '../DataSet/Topologies-json/Fmaps-Topology-' + str(scenarioId) + '.json'
 
-    drones.append({"x" : drones_list[0][0] , "y" : drones_list[0][1] , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 36})
-    drones.append({"x" : drones_list[1][0] , "y" : drones_list[1][1] , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 40})
-    drones.append({"x" : drones_list[2][0] , "y" : drones_list[2][1] , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 44})
+    drones.append({"x" : drones_list[0][0]*30+15 , "y" : drones_list[0][1]*30+15 , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 36})
+    drones.append({"x" : drones_list[1][0]*30+15 , "y" : drones_list[1][1]*30+15 , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 40})
+    drones.append({"x" : drones_list[2][0]*30+15 , "y" : drones_list[2][1]*30+15 , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 44})
 
     jsonString = json.dumps(drones, separators=('\t,\t', ' : '))
 
