@@ -128,19 +128,6 @@ def build_model_structure(scenarios, results, list_scenarios, list_topologies):
         return (model_struct_orig + model_struct_rot1 + model_struct_rot2 + model_struct_rot3 + model_struct_sym1 + model_struct_sym2 + model_struct_sym3 + model_struct_sym4),(model_prediction + model_pred_rot1 + model_pred_rot2 + model_pred_rot3 + model_pred_sym1 + model_pred_sym2 + model_pred_sym3 + model_pred_sym4)
     else:
         return model_struct_orig, model_prediction      
-#Decided to not use this function in order to make the code more generic
-def normalize_sparse_topology(matrix):
-    new_matrix = np.empty((len(matrix), len(matrix[0])), dtype = "float")
-    mean = (97*0+3*1)/100
-    std = math.sqrt((97*(0-mean)*(0-mean)+3*(1-mean)*(1-mean))/100)
-
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            new_matrix[i][j] = (matrix[i][j] - mean)/std
-
-    return new_matrix
-
-
 
 def separate_qualities(qualities_list):
     throughput = []
