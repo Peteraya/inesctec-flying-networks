@@ -80,21 +80,22 @@ def best_topology_brute_force(model_throughput, model_delay, model_pdr, scenario
     return scenario_topologies_list[topology_index][1]
 
 
-def save_drones_to_json(drones_list):
+def get_scenarios_list():
+    scenarios = read_scenarios(DATASET_DIRECTORY)
+    scenarios_list = []
+    for scenario in scenarios:
+        scenarios_list.append(datarate_matrix(scenario))
+    return scenarios_list
+
+def save_drones_to_json(drones_list,scenarioId):
 
     drones = []
 
-    if not(os.path.exists("../DataSet/Topologies-json")):
-        fileId = 1
-    else:
-        allFiles = glob.glob("../DataSet/Topologies-json/best_top*.json")
-        fileId = len(allFiles)+1
+    filename = '../DataSet/Topologies-json/Fmaps-Topology-' + str(scenarioId) + '.json'
 
-    filename = '../DataSet/Topologies-json/best_top' + str(fileId) + '.json'
-
-    drones.append({"x" : drones_list[0][0]*30+15 , "y" : drones_list[0][1]*30+15 , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 36})
-    drones.append({"x" : drones_list[1][0]*30+15 , "y" : drones_list[1][1]*30+15 , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 40})
-    drones.append({"x" : drones_list[2][0]*30+15 , "y" : drones_list[2][1]*30+15 , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 44})
+    drones.append({"x" : drones_list[0][0] , "y" : drones_list[0][1] , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 36})
+    drones.append({"x" : drones_list[1][0] , "y" : drones_list[1][1] , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 40})
+    drones.append({"x" : drones_list[2][0] , "y" : drones_list[2][1] , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 44})
 
     jsonString = json.dumps(drones, separators=('\t,\t', ' : '))
 
@@ -104,13 +105,6 @@ def save_drones_to_json(drones_list):
 
     with open(filename, 'w') as f:
         f.write(jsonString)
-
-def get_scenarios_list():
-    scenarios = read_scenarios(DATASET_DIRECTORY)
-    scenarios_list = []
-    for scenario in scenarios:
-        scenarios_list.append(datarate_matrix(scenario))
-    return scenarios_list
 
 def best_topology(scenario_id):
     scenario = get_scenarios_list()[scenario_id-1]
