@@ -49,7 +49,7 @@ def get_topology(drones, mean, std, nrows, ncolumns):
     if(DISTANCE_ENCODING == 1):
         topology = sparse_to_distance(topology)
     if(NORMALIZE_DATA == 1):
-        topology = adjust_matrix(topology, mean, std)
+        topology = normalize_matrix(topology, mean, std)
     return topology
 
 def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, drones):

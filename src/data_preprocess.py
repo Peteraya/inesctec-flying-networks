@@ -105,7 +105,7 @@ def build_model_structure(scenarios, results, list_scenarios, list_topologies):
             if(DISTANCE_ENCODING == 1):
                 topology_matrix = sparse_to_distance(topology_matrix)
             if(NORMALIZE_DATA == 1):
-                topology_matrix = adjust_matrix(topology_matrix, mean, std)
+                topology_matrix = normalize_matrix(topology_matrix, mean, std)
             model_struct_orig.append([scenario_matrix, topology_matrix])
             model_prediction.append(qualities_list)
         index_scenario += 1
