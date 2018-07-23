@@ -27,7 +27,7 @@ def save_topologies_to_json():
                             if(DISTANCE_ENCODING == 1):
                                 topology = sparse_to_distance(topology)
                             if(NORMALIZE_DATA == 1):
-                                topology = normalize_matrix(topology)
+                                topology = normalize_matrix(topology, 0, 1)
                             topology = round_matrix(topology, 4)
                             topologies.append(topology.tolist())    
                             topology = np.zeros((10, 10), dtype = 'float')

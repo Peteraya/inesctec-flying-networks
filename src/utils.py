@@ -3,7 +3,6 @@ import pandas as pd
 import math
 import os, glob
 import codecs, json
-from settings import *
 from random import *
 
 def rotate(size, x, y, angle):
@@ -97,33 +96,6 @@ def round_matrix(matrix, decimal_points):
            new_matrix[i][j] = round(matrix[i][j], decimal_points)
     return new_matrix
 
-def build_topologie_train_list(scenarios):
-
-    top_list = []
-
-    for index in range(len(scenarios)):
-        top_list.append(sample(range(1, SCENARIO_TOPOLOGIES_NO), TOPOLOGIES_TRAINING))
-
-    return top_list
-
-
-def build_topologie_validation_n_test_list(train_list):
-
-    return_list = []
-    validation_list = []
-    test_list = []
-    complete_list = list(range(1,(SCENARIO_TOPOLOGIES_NO+1)))
-
-    for index in range(len(train_list)):
-
-        diff = list(set(complete_list) - set(train_list[index]))
-        validation_list.append(diff[:TOPOLOGIES_VALIDATION])
-        test_list.append(diff[TOPOLOGIES_VALIDATION:])
-
-    return_list.append(validation_list)
-    return_list.append(test_list)
-
-    return return_list
 
 
 
