@@ -1,8 +1,9 @@
-from utils import *
-from math import *
+import utils
+import math
 import numpy as np
 import random
 import time
+import settings
 random.seed(time.time())
 
 def valid_position(position, nrows, ncolumns):
@@ -14,7 +15,7 @@ def valid_position(position, nrows, ncolumns):
         return True
 
 def adjacent_position(position, nrows, ncolumns):
-    new_position = randint(0, 3)
+    new_position = random.randint(0, 3)
     position_selected = False
 
     while(True):
@@ -29,8 +30,8 @@ def adjacent_position(position, nrows, ncolumns):
         new_position += 1
 
 def adjacent_state(drones, nrows, ncolumns):
-    new_drones = drones.copy() #TODO: CHECK THAT THIS IS CORRECT
-    drone_index = randint(0, len(drones) - 1)
+    new_drones = drones.copy()
+    drone_index = random.randint(0, len(drones) - 1)
     new_drones[drone_index] = adjacent_position(drones[drone_index], nrows, ncolumns)
     return new_drones
 
@@ -40,20 +41,20 @@ def value(model_throughput, model_delay, model_pdr, scenario, topology):
     throughput_pred = model_throughput.predict(scenario_topologies_list)
     delay_pred = model_delay.predict(scenario_topologies_list)
     pdr_pred = model_pdr.predict(scenario_topologies_list)
-    return quality(throughput_pred[0][0], delay_pred[0][0], pdr_pred[0][0]), [throughput_pred[0][0], delay_pred[0][0], pdr_pred[0][0]]
+    return settings.quality(throughput_pred[0][0], delay_pred[0][0], pdr_pred[0][0]), [throughput_pred[0][0], delay_pred[0][0], pdr_pred[0][0]]
 
 def get_topology(drones, mean, std, nrows, ncolumns):
     topology = np.zeros((nrows, ncolumns))
     for i in range(0, len(drones)):
         topology[int(drones[i][0])][int(drones[i][1])] = 1
-    if(DISTANCE_ENCODING == 1):
-        topology = sparse_to_distance(topology)
-    if(NORMALIZE_DATA == 1):
-        topology = normalize_matrix(topology, mean, std)
+    if(settings.DISTANCE_ENCODING == 1):
+        topology = utils.sparse_to_distance(topology)
+    if(settings.NORMALIZE_DATA == 1):
+        topology = utils.normalize_matrix(topology, mean, std)
     return topology
 
 def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, drones):
-    mean, std = stats_matrix(scenario)
+    mean, std = utils.stats_matrix(scenario)
     nrows = len(scenario)
     ncolumns = len(scenario[0])
     topology = get_topology(drones, mean, std, nrows, ncolumns)
@@ -83,7 +84,7 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, dron
                 best_drones = drones.copy()
                 best_variables = variables.copy()
         else:
-            probability = exp(10000*diff/temperature) 
+            probability = math.exp(10000*diff/temperature) 
             random_float = random.random()
             if(random_float < probability):
                 topology = np.copy(new_topology)
