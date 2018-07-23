@@ -7,45 +7,6 @@ from settings import *
 from utils import *
 
 
-def model_list(results, scenarios):
-    model_list = []
-
-    for index in range(len(scenarios)):
-                
-        scenario_results = results.loc[results["Scenario"] == (index+1)]
-    
-        scenario_list = []
-
-        for index_res in range(len(scenario_results)):
-        
-            scenario_frame = copy.deepcopy(scenarios[index])
-            scenario_frame["UAV"] = 0
-        
-            top_scenario = scenario_results.loc[scenario_results["topologyId"] == (index_res+1)]
-            #scenario_frame["topologyId"] = (index_res+1)
-            # UAV 1
-            x_frame = scenario_frame['x'] == int(top_scenario['fmap1CoordinatesX'])
-            y_frame = scenario_frame['y'] == int(top_scenario['fmap1CoordinatesY'])
-            row_ind = scenario_frame[x_frame & y_frame].index
-            scenario_frame.loc[row_ind, 'UAV'] = 1
-            # UAV 2
-            x_frame = scenario_frame['x'] == int(top_scenario['fmap2CoordinatesX'])
-            y_frame = scenario_frame['y'] == int(top_scenario['fmap2CoordinatesY'])
-            row_ind = scenario_frame[x_frame & y_frame].index
-            scenario_frame.loc[row_ind, 'UAV'] = 1
-            # UAV 3
-            x_frame = scenario_frame['x'] == int(top_scenario['fmap3CoordinatesX'])
-            y_frame = scenario_frame['y'] == int(top_scenario['fmap3CoordinatesY'])
-            row_ind = scenario_frame[x_frame & y_frame].index
-            scenario_frame.loc[row_ind, 'UAV'] = 1
-
-            scenario_list.append(scenario_frame)
-
-        model_list.append(scenario_list)
-
-    return model_list
-
-
 def datarate_matrix(scenario_frame):
     scenario_matrix = np.zeros((SCENARIO_ROWS, SCENARIO_COLUMNS), dtype = 'float')
     for i in range(len(scenario_frame)):
