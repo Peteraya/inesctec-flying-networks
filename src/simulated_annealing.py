@@ -66,8 +66,9 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, dron
     temperature = 10000
     while(temperature > 0):
         print("Temperature: "+str(temperature))
-        print(drones)
-        print(current_value)
+        print("Drones Location: "+str(drones))
+        print("Current State Value: "+str(current_value))
+        print("Variables: "+str(variables))
         print("\n")
         new_drones = adjacent_state(drones, nrows, ncolumns)
         new_topology = get_topology(new_drones, mean, std, nrows, ncolumns)
