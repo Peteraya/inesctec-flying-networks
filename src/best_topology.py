@@ -1,4 +1,5 @@
 import numpy as np
+import csv
 from settings import *
 from utils import *
 from simulated_annealing import *
@@ -106,6 +107,17 @@ def save_drones_to_json(drones_list,scenarioId):
     with open(filename, 'w') as f:
         f.write(jsonString)
 
+
+def save_qualities_to_csv(*args):
+
+    quali_dict = {"quality": args[0], "throughput": args[1], "Delay": args[2], "pdr": args[3]}
+
+    with open('../DataSet/Topologies-json/Fmaps-Topology-'+ str(args[4]) + '-Qualities.csv', 'w') as f:
+        w = csv.DictWriter(f, quali_dict.keys())
+        w.writeheader()
+        w.writerow(quali_dict)
+
+
 def best_topology(scenario_id):
     scenario = get_scenarios_list()[scenario_id-1]
     model_throughput, model_delay, model_pdr = load_models()
@@ -117,3 +129,4 @@ def best_topology(scenario_id):
     print("Throughput: "+str(throughput))
     print("Delay: "+str(delay))
     print("PDR: "+str(pdr))
+    save_qualities_to_csv(quality,throughput, delay, pdr,scenario_id)
