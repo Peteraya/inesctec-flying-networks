@@ -33,7 +33,7 @@ def drones_matrix(results_line):
     return matrix, quality_items
 
 
-def build_model_structure_transformation(model_structure, model_prediction, list_scenarios, list_topologies,function, angle):
+def build_input_structure_transformation(model_structure, model_prediction, list_scenarios, list_topologies,function, angle):
     index_model_structure = 0
     model_structure_transformed = []
     model_prediction_transformed = []
@@ -50,7 +50,7 @@ def build_model_structure_transformation(model_structure, model_prediction, list
         index_scenario += 1
     return model_structure_transformed, model_prediction_transformed
 
-def build_model_structure(scenarios, results, list_scenarios, list_topologies):
+def build_input_structure(scenarios, results, list_scenarios, list_topologies):
     model_struct_orig = []
     model_prediction = []
     #first the topologies without any transformation
@@ -72,23 +72,36 @@ def build_model_structure(scenarios, results, list_scenarios, list_topologies):
         index_scenario += 1
     if(USE_TRANSFORMATIONS == 1):
         #Then the topologies with a 90 rotation
-        model_struct_rot1, model_pred_rot1 = build_model_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, rotate, 90)
+        model_struct_rot1, model_pred_rot1 = build_input_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, rotate, 90)
         #Then the topologies with a 180 rotation
-        model_struct_rot2, model_pred_rot2 = build_model_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, rotate, 180)
+        model_struct_rot2, model_pred_rot2 = build_input_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, rotate, 180)
         #Then the topologies with a 270 rotation
-        model_struct_rot3, model_pred_rot3 = build_model_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, rotate, 270)
+        model_struct_rot3, model_pred_rot3 = build_input_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, rotate, 270)
         #Then the topologies with a symmetry over the 0 axis
-        model_struct_sym1, model_pred_sym1 = build_model_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, symmetric, 0)
+        model_struct_sym1, model_pred_sym1 = build_input_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, symmetric, 0)
         #Then the topologies with a symmetry over the 45 axis
-        model_struct_sym2, model_pred_sym2 = build_model_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, symmetric, 45)
+        model_struct_sym2, model_pred_sym2 = build_input_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, symmetric, 45)
         #Then the topologies with a symmetry over the 90 axis
-        model_struct_sym3, model_pred_sym3 = build_model_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, symmetric, 90)
+        model_struct_sym3, model_pred_sym3 = build_input_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, symmetric, 90)
         #Then the topologies with a symmetry over the 135 axis
-        model_struct_sym4, model_pred_sym4 = build_model_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, symmetric, 135)
+        model_struct_sym4, model_pred_sym4 = build_input_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, symmetric, 135)
 
         return (model_struct_orig + model_struct_rot1 + model_struct_rot2 + model_struct_rot3 + model_struct_sym1 + model_struct_sym2 + model_struct_sym3 + model_struct_sym4),(model_prediction + model_pred_rot1 + model_pred_rot2 + model_pred_rot3 + model_pred_sym1 + model_pred_sym2 + model_pred_sym3 + model_pred_sym4)
     else:
         return model_struct_orig, model_prediction      
+
+def build_input_struct_channels_last_matrix(input_entry):
+    new_struct = np.empty((len(input_entry[0]), len(input_entry[0][0]), 2), dtype='float')
+    for i in range(len(input_entry[0])):
+        for j in range(len(input_entry[0][i])):
+            new_struct[i][j] = [input_entry[0][i][j], input_entry[1][i][j]]
+    return new_struct
+
+def build_input_structure_channels_last(input_struct):
+    new_struct = []
+    for input_entry in input_struct:
+        new_struct.append(build_input_struct_channels_last_matrix(input_entry))
+    return new_struct
 
 def separate_qualities(qualities_list):
     throughput = []
