@@ -4,6 +4,7 @@ import numpy as np
 import random
 import time
 import settings
+import data_preprocess
 random.seed(time.time())
 
 def valid_position(position, nrows, ncolumns):
@@ -38,6 +39,8 @@ def adjacent_state(drones, nrows, ncolumns):
 def value(model_throughput, model_delay, model_pdr, scenario, topology):
 
     scenario_topologies_list = np.array([np.array([scenario, topology])])
+    if(settings.CHANNELS_LAST == 1):
+        scenario_topologies_list = data_preprocess.build_input_structure_channels_last(scenario_topologies_list)
     throughput_pred = model_throughput.predict(scenario_topologies_list)
     delay_pred = model_delay.predict(scenario_topologies_list)
     pdr_pred = model_pdr.predict(scenario_topologies_list)

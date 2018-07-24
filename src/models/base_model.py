@@ -54,7 +54,7 @@ class BaseModel:
         plt.xlabel('epoch')
         plt.legend(['train', 'validation'], loc='upper left')
         plt.savefig('../DataSet/Plots/' + variable_name + '/plot' + str(plotId) + "_mae.png")
-        plt.show()
+        #plt.show()
         # summarize history for loss
         plt.plot(history.history['loss'])
         plt.plot(history.history['val_loss'])
@@ -63,7 +63,7 @@ class BaseModel:
         plt.xlabel('epoch')
         plt.legend(['train', 'validation'], loc='upper left')
         plt.savefig('../DataSet/Plots/' + variable_name + '/plot' + str(plotId) + "_loss.png")
-        plt.show()
+        #plt.show()
 
         score_valid = self.model.evaluate(validation_matrix, validation_y,verbose=1)
         print("----------------------------------------------------")
