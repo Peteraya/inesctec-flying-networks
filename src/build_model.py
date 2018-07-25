@@ -49,9 +49,9 @@ throughput_validation, delay_validation, jitter_validation, pdr_validation = np.
 
 model = DefaultModel()
 
-model.run(input_train, throughput_train, input_validation, throughput_validation, "Throughput")
-model.run(input_train, delay_train, input_validation, delay_validation, "Delay")
-#model.run(train_matrix, jitter_train, validation_matrix, jitter_validation, "Jitter")
-model.run(input_train, pdr_train, input_validation, pdr_validation, "Pdr")
+#model.run(input_train, throughput_train, input_validation, throughput_validation, "Throughput")
+#model.run(input_train, delay_train, input_validation, delay_validation, "Delay")
+##model.run(train_matrix, jitter_train, validation_matrix, jitter_validation, "Jitter")
+#model.run(input_train, pdr_train, input_validation, pdr_validation, "Pdr")
 
 #  np.abs(throughput_validation - throughput_train.mean()).mean()        media 

@@ -21,7 +21,8 @@ class DefaultModel(BaseModel):
         conv1 = Conv2D(32, kernel_size=3, data_format = "channels_first", activation='relu')(visible)
         #pool1 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv1)
         conv2 = Conv2D(64, kernel_size=3, data_format = "channels_first", activation='relu')(conv1)
-        pool2 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv2)
+        conv3 = Conv2D(64, kernel_size=3, data_format = "channels_first", activation='relu')(conv2)
+        pool2 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv3)
         flat = Flatten(data_format = "channels_first")(pool2)
         hidden1 = Dense(10, activation='relu', kernel_initializer='normal')(flat)
         hidden2 = Dense(10, activation='relu', kernel_initializer='normal')(hidden1)
@@ -36,7 +37,7 @@ class DefaultModel(BaseModel):
 
         
         self.print_model( "default_model.png")
-        rmsprop = RMSprop(lr=0.01)
+        rmsprop = Adam(lr=0.001)
         self.model.compile(optimizer = rmsprop, loss="mse", metrics=['mae'])
         self.model.summary()
         
