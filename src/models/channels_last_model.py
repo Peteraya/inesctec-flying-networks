@@ -36,6 +36,6 @@ class ChannelsLastModel(BaseModel):
 
         
         self.print_model( "default_model.png")
-        rmsprop = RMSprop(lr=0.01)
-        self.model.compile(optimizer = rmsprop, loss="mse", metrics=['mae'])
+        adam_opt = Adam(lr=0.01)
+        self.model.compile(optimizer = adam_opt, loss="mse", metrics=['mae'])
         self.model.summary()
