@@ -14,15 +14,18 @@ from keras.layers import LeakyReLU
 
 class DefaultModel(BaseModel):
     
-    def __init__(self):
+    def __init__(self, learning_rate, extra_layer=False):
         #input layer
         visible = Input(shape=(2,10, 10))
 
         conv1 = Conv2D(32, kernel_size=3, data_format = "channels_first", activation='relu')(visible)
         #pool1 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv1)
         conv2 = Conv2D(64, kernel_size=3, data_format = "channels_first", activation='relu')(conv1)
-        conv3 = Conv2D(64, kernel_size=3, data_format = "channels_first", activation='relu')(conv2)
-        pool2 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv3)
+        if(extra_layer == True):
+            conv3 = Conv2D(64, kernel_size=3, data_format = "channels_first", activation='relu')(conv2)
+            pool2 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv3)
+        else:
+            pool2 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv2)
         flat = Flatten(data_format = "channels_first")(pool2)
         hidden1 = Dense(10, activation='relu', kernel_initializer='normal')(flat)
         hidden2 = Dense(10, activation='relu', kernel_initializer='normal')(hidden1)
@@ -37,7 +40,7 @@ class DefaultModel(BaseModel):
 
         
         self.print_model( "default_model.png")
-        rmsprop = Adam(lr=0.001)
-        self.model.compile(optimizer = rmsprop, loss="mse", metrics=['mae'])
+        adam_opt = Adam(lr=learning_rate)
+        self.model.compile(optimizer = adam_opt, loss="mse", metrics=['mae'])
         self.model.summary()
         

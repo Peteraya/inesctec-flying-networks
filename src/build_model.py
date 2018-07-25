@@ -4,7 +4,7 @@ import numpy as np
 from load_data import *
 from data_preprocess import *
 from models.base_model import *
-from models.default_model import *
+import models.default_model
 import models.channels_last_model
 
 
@@ -47,11 +47,20 @@ throughput_validation, delay_validation, jitter_validation, pdr_validation = sep
 throughput_validation, delay_validation, jitter_validation, pdr_validation = np.array(throughput_validation), np.array(delay_validation), np.array(jitter_validation), np.array(pdr_validation)
 
 
-model = DefaultModel()
 
-#model.run(input_train, throughput_train, input_validation, throughput_validation, "Throughput")
-#model.run(input_train, delay_train, input_validation, delay_validation, "Delay")
-##model.run(train_matrix, jitter_train, validation_matrix, jitter_validation, "Jitter")
-#model.run(input_train, pdr_train, input_validation, pdr_validation, "Pdr")
+if(CHANNELS_LAST == True):
+    model_throughput = models.channels_last_model.ChannelsLastModel()
+    model_delay = models.channels_last_model.ChannelsLastModel()
+    model_jitter = models.channels_last_model.ChannelsLastModel()
+    model_pdr = models.channels_last_model.ChannelsLastModel()
+else:
+    model_throughput = models.default_model.DefaultModel(0.001)
+    model_delay = models.default_model.DefaultModel(0.001, True)
+    model_jitter = models.default_model.DefaultModel(0.001)
+    model_pdr = models.default_model.DefaultModel(0.001, True)
 
-#  np.abs(throughput_validation - throughput_train.mean()).mean()        media 
+model_throughput.run(input_train, throughput_train, input_validation, throughput_validation, "Throughput")
+model_delay.run(input_train, delay_train, input_validation, delay_validation, "Delay")
+#model.run(input_train, jitter_train, input_validation, jitter_validation, "Jitter")
+model_pdr.run(input_train, pdr_train, input_validation, pdr_validation, "Pdr")
+
