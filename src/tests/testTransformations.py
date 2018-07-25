@@ -79,7 +79,32 @@ class TestTransformations(unittest.TestCase):
         # 3 1
         # 4 2
         self.assertSequenceEqual(new_matrix.tolist(), [[4, 2], [3, 1]])
-
+    
+    def test_large_matrix_rotate_270(self):
+        matrix = [[1,2,3], [4, 5, 6], [7, 8, 9]]
+        # The matrix is:
+        # 7 8 9
+        # 4 5 6
+        # 1 2 3
+        new_matrix = utils.transform_matrix(matrix, utils.rotate, 270)
+        # New matrix is:
+        # 9 6 3
+        # 8 5 2
+        # 7 4 1
+        self.assertSequenceEqual(new_matrix.tolist(), [[7, 4, 1], [8, 5, 2], [9, 6, 3]])
+    
+    def test_large_matrix_symmetry_45(self):
+        matrix = [[1,2,3], [4, 5, 6], [7, 8, 9]]
+        # The matrix is:
+        # 7 8 9
+        # 4 5 6
+        # 1 2 3
+        new_matrix = utils.transform_matrix(matrix, utils.symmetric, 45)
+        # New matrix is:
+        # 3 6 9
+        # 2 5 8
+        # 1 4 7
+        self.assertSequenceEqual(new_matrix.tolist(), [[1, 4, 7], [2, 5, 8],  [3, 6, 9]])
 
 if(__name__== '__main__'):
     unittest.main()
