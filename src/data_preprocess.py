@@ -5,6 +5,7 @@ import pandas as pd
 import math
 from settings import *
 from utils import *
+from random import *
 
 
 def datarate_matrix(scenario_frame):

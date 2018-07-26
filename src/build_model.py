@@ -38,14 +38,27 @@ if(CHANNELS_LAST == 1):
     input_train = build_input_structure_channels_last(input_train)
     input_validation = build_input_structure_channels_last(input_validation)
 
-input_train = np.array(input_train)
+
 throughput_train, delay_train, jitter_train, pdr_train = separate_qualities(qualities_train)
-throughput_train, delay_train, jitter_train, pdr_train = np.array(throughput_train), np.array(delay_train), np.array(jitter_train), np.array(pdr_train)
 
-input_validation = np.array(input_validation)
 throughput_validation, delay_validation, jitter_validation, pdr_validation = separate_qualities(qualities_validation)
-throughput_validation, delay_validation, jitter_validation, pdr_validation = np.array(throughput_validation), np.array(delay_validation), np.array(jitter_validation), np.array(pdr_validation)
 
+if(VALIDATION_SPLIT == 1):
+    input_train += input_validation
+    throughput_train += throughput_validation
+    delay_train += delay_validation
+    jitter_train += jitter_validation
+    pdr_train += pdr_validation
+    input_validation = None
+    throughput_validation = None
+    delay_validation = None
+    jitter_validation = None
+    pdr_validation = None
+
+input_train = np.array(input_train)
+throughput_train, delay_train, jitter_train, pdr_train = np.array(throughput_train), np.array(delay_train), np.array(jitter_train), np.array(pdr_train)
+input_validation = np.array(input_validation)
+throughput_validation, delay_validation, jitter_validation, pdr_validation = np.array(throughput_validation), np.array(delay_validation), np.array(jitter_validation), np.array(pdr_validation)
 
 
 if(CHANNELS_LAST == True):
@@ -59,8 +72,8 @@ else:
     model_jitter = models.default_model.DefaultModel(0.001)
     model_pdr = models.default_model.DefaultModel(0.001, True)
 
-model_throughput.run(input_train, throughput_train, input_validation, throughput_validation, "Throughput")
-model_delay.run(input_train, delay_train, input_validation, delay_validation, "Delay")
-#model.run(input_train, jitter_train, input_validation, jitter_validation, "Jitter")
-model_pdr.run(input_train, pdr_train, input_validation, pdr_validation, "Pdr")
+#model_throughput.run(input_train, throughput_train, input_validation, throughput_validation, "Throughput")
+#model_delay.run(input_train, delay_train, input_validation, delay_validation, "Delay")
+#model_jitter.run(input_train, jitter_train, input_validation, jitter_validation, "Jitter")
+#model_pdr.run(input_train, pdr_train, input_validation, pdr_validation, "Pdr")
 

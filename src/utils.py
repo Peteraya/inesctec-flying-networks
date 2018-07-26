@@ -3,7 +3,7 @@ import pandas as pd
 import math
 import os, glob
 import codecs, json
-from random import *
+import random
 
 def rotate(size, x, y, angle):
     if angle == 90:
@@ -96,6 +96,17 @@ def round_matrix(matrix, decimal_points):
            new_matrix[i][j] = round(matrix[i][j], decimal_points)
     return new_matrix
 
+def shuffle_input_data(input_x, input_y):
+    struct_to_shuffle = []
+    for i in range(len(input_x)):
+        struct_to_shuffle.append([input_x[i], input_y[i]])
+    random.shuffle(struct_to_shuffle)
+    new_input_x = []
+    new_input_y = []
+    for element in struct_to_shuffle:
+        new_input_x.append(element[0])
+        new_input_y.append(element[1])
+    return np.array(new_input_x), np.array(new_input_y)
 
 
 
