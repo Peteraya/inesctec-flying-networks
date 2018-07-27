@@ -14,7 +14,7 @@ def datarate_matrix(scenario_frame):
         x = scenario_frame.loc[i, 'x']
         y = scenario_frame.loc[i, 'y']
         rate = scenario_frame.loc[i, 'dataRateMbps']
-        scenario_matrix[x][y] = rate
+        scenario_matrix[y][x] = rate
     
     return scenario_matrix    
 
@@ -28,9 +28,9 @@ def drones_matrix(results_line):
     drone3_y = int(results_line.loc['fmap3CoordinatesY'])
     quality_items = [float(results_line.loc['meanRxBitrateMbps']),float(results_line.loc['meanDelayMs']),
     float(results_line.loc['meanJitterMs']),float(results_line.loc['meanPdr'])]
-    matrix[drone1_x][drone1_y] = 1
-    matrix[drone2_x][drone2_y] = 1
-    matrix[drone3_x][drone3_y] = 1
+    matrix[drone1_y][drone1_x] = 1
+    matrix[drone2_y][drone2_x] = 1
+    matrix[drone3_y][drone3_x] = 1
     return matrix, quality_items
 
 

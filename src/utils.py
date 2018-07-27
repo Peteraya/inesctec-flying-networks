@@ -108,6 +108,13 @@ def shuffle_input_data(input_x, input_y):
         new_input_y.append(element[1])
     return np.array(new_input_x), np.array(new_input_y)
 
+def mean_absolute_percentage_error(y_true, y_pred):
+    sum_abs_perc_error = 0
+    for i in range(len(y_true)):
+        sum_abs_perc_error += abs((y_true[i]-y_pred[i])/y_true[i])
+    
+    return (100/len(y_true))*sum_abs_perc_error
+
 
 
     

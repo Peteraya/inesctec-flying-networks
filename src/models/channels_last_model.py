@@ -14,7 +14,8 @@ from keras.layers import LeakyReLU
 
 class ChannelsLastModel(BaseModel):
     
-    def __init__(self):
+    def __init__(self, variable_name):
+        self.variable_name = variable_name
         #input layer
         visible = Input(shape=(10,10, 2))
 
