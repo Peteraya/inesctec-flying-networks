@@ -40,8 +40,9 @@ def build_input_structure_transformation(model_structure, model_prediction, list
     model_prediction_transformed = []
     index_scenario = 0
     for scenario_id in list_scenarios:
-        scenario_matrix = model_structure[index_model_structure][0]
-        scenario_matrix_transformed = transform_matrix(scenario_matrix, function, angle)
+        if(len(list_topologies[index_scenario]) > 0):
+            scenario_matrix = model_structure[index_model_structure][0]
+            scenario_matrix_transformed = transform_matrix(scenario_matrix, function, angle)
         for topology_id in list_topologies[index_scenario]:
             topology_matrix = model_structure[index_model_structure][1]
             topology_matrix_transformed = transform_matrix(topology_matrix, function, angle)

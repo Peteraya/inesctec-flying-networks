@@ -15,25 +15,25 @@ scenarios = load_data.read_scenarios(settings.DATASET_DIRECTORY)
 
 
 if settings.DIVISION_BY_TOPOLOGIES:
-	topologie_list_train = data_preprocess.build_topologie_train_list(scenarios)
-	aux_topologie_list = data_preprocess.build_topologie_validation_n_test_list(topologie_list_train)
-	topologie_list_validation = aux_topologie_list[0]
-	topologie_list_test = aux_topologie_list[1]
-	list_scenarios = list(range(1,(settings.SCENARIOS_NO+1)))
+    topologie_list_train = data_preprocess.build_topologie_train_list(scenarios)
+    aux_topologie_list = data_preprocess.build_topologie_validation_n_test_list(topologie_list_train)
+    topologie_list_validation = aux_topologie_list[0]
+    topologie_list_test = aux_topologie_list[1]
+    list_scenarios = list(range(1,(settings.SCENARIOS_NO+1)))
 
-	input_train, qualities_train = data_preprocess.build_input_structure(scenarios, results, list_scenarios, topologie_list_train)
-	input_validation, qualities_validation = data_preprocess.build_input_structure(scenarios, results, list_scenarios, topologie_list_validation)
-	input_test, qualities_test = data_preprocess.build_input_structure(scenarios, results, list_scenarios, topologie_list_test)
+    input_train, qualities_train = data_preprocess.build_input_structure(scenarios, results, list_scenarios, topologie_list_train)
+    input_validation, qualities_validation = data_preprocess.build_input_structure(scenarios, results, list_scenarios, topologie_list_validation)
+    input_test, qualities_test = data_preprocess.build_input_structure(scenarios, results, list_scenarios, topologie_list_test)
 
 
 else:
-	topologies_list = []
-	for index in range(10):
-		topologies_list.append(list(range(1,(settings.SCENARIO_TOPOLOGIES_NO+1))))
+    topologies_list = []
+    for index in range(10):
+        topologies_list.append(list(range(1,(settings.SCENARIO_TOPOLOGIES_NO+1))))
 
-	input_train, qualities_train = data_preprocess.build_input_structure(scenarios, results, settings.SCENARIOS_TRAINING, topologies_list)
-	input_validation, qualities_validation = data_preprocess.build_input_structure(scenarios, results, settings.SCENARIOS_VALIDATION, topologies_list)
-	input_test, qualities_test = data_preprocess.build_input_structure(scenarios, results, settings.SCENARIOS_TEST, topologies_list)
+    input_train, qualities_train = data_preprocess.build_input_structure(scenarios, results, settings.SCENARIOS_TRAINING, topologies_list)
+    input_validation, qualities_validation = data_preprocess.build_input_structure(scenarios, results, settings.SCENARIOS_VALIDATION, topologies_list)
+    input_test, qualities_test = data_preprocess.build_input_structure(scenarios, results, settings.SCENARIOS_TEST, topologies_list)
 
 if(settings.CHANNELS_LAST == 1):
     input_train = data_preprocess.build_input_structure_channels_last(input_train)
@@ -75,10 +75,10 @@ else:
     model_jitter = models.default_model.DefaultModel(0.001, "Jitter")
     model_pdr = models.default_model.DefaultModel(0.001, "Pdr", True)
 
-model_throughput.run(input_train, throughput_train, input_validation, throughput_validation, 10)
+model_throughput.run(input_train, throughput_train, input_validation, throughput_validation, 100)
 model_delay.run(input_train, delay_train, input_validation, delay_validation,100)
 #model_jitter.run(input_train, jitter_train, input_validation, jitter_validation, 100)
-model_pdr.run(input_train, pdr_train, input_validation, pdr_validation, 5)
+model_pdr.run(input_train, pdr_train, input_validation, pdr_validation, 100)
 
 if(settings.TEST_RESULTS == 1):
     model_throughput.evaluate(input_test, throughput_test)
