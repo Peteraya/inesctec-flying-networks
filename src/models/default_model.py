@@ -22,6 +22,7 @@ class DefaultModel(models.base_model.BaseModel):
         self.variable_name = variable_name
         #input layer
         visible = Input(shape=(2,10, 10))
+        modelPrintingName= "default_model.png"
 
         conv1 = Conv2D(32, kernel_size=3, data_format = "channels_first", activation='relu')(visible)
         #pool1 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv1)
@@ -29,6 +30,7 @@ class DefaultModel(models.base_model.BaseModel):
         if(extra_layer):
             conv3 = Conv2D(64, kernel_size=3, data_format = "channels_first", activation='relu')(conv2)
             pool2 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv3)
+            modelPrintingName = "extra_layer_model.png"
         else:
             pool2 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv2)
         flat = Flatten(data_format = "channels_first")(pool2)
@@ -44,7 +46,7 @@ class DefaultModel(models.base_model.BaseModel):
         self.model = model
 
         
-        self.print_model( "default_model.png")
+        self.print_model(modelPrintingName)
         adam_opt = keras.optimizers.Adam(lr=learning_rate)
         self.model.compile(optimizer = adam_opt, loss="mse", metrics=['mae', mean_absolute_percentage_error])
         self.model.summary()
