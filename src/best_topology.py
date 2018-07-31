@@ -1,13 +1,10 @@
-import numpy as np
 import csv
-from settings import *
-from utils import *
-from simulated_annealing import *
+import settings
+import simulated_annealing
+import json
 from keras.models import model_from_json
-import codecs, json
-from load_data import *
-from data_preprocess import *
-
+import load_data
+import data_preprocess
 
 
 def load_models():
@@ -32,10 +29,10 @@ def load_models():
     return model_throughput, model_delay, model_pdr
 
 def get_scenarios_list():
-    scenarios = read_scenarios(DATASET_DIRECTORY)
+    scenarios = load_data.read_scenarios(settings.DATASET_DIRECTORY)
     scenarios_list = []
     for scenario in scenarios:
-        scenarios_list.append(datarate_matrix(scenario))
+        scenarios_list.append(data_preprocess.datarate_matrix(scenario))
     return scenarios_list
 
 def save_drones_to_json(drones_list,scenarioId):
@@ -48,31 +45,31 @@ def save_drones_to_json(drones_list,scenarioId):
     drones.append({"x" : drones_list[1][0]*30+15 , "y" : drones_list[1][1]*30+15 , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 40})
     drones.append({"x" : drones_list[2][0]*30+15 , "y" : drones_list[2][1]*30+15 , "z" : 10, "wifiCellRange": 100, "wifiChannelNumber": 44})
 
-    jsonString = json.dumps(drones, separators=('\t,\t', ' : '))
+    json_string = json.dumps(drones, separators=('\t,\t', ' : '))
 
-    jsonString = jsonString.replace('[{', '[\n\t{ ')
-    jsonString = jsonString.replace('}\t,\t{', ' } ,\n\t{ ')
-    jsonString = jsonString.replace('}]', ' }\n]')
+    json_string = json_string.replace('[{', '[\n\t{ ')
+    json_string = json_string.replace('}\t,\t{', ' } ,\n\t{ ')
+    json_string = json_string.replace('}]', ' }\n]')
 
-    with open(filename, 'w') as f:
-        f.write(jsonString)
+    with open(filename, 'w') as file:
+        file.write(json_string)
 
 
 def save_qualities_to_csv(*args):
 
     quali_dict = {"quality": args[0], "throughput": args[1], "Delay": args[2], "pdr": args[3]}
 
-    with open('../DataSet/Topologies-json/Fmaps-Topology-'+ str(args[4]) + '-Qualities.csv', 'w') as f:
-        w = csv.DictWriter(f, quali_dict.keys())
-        w.writeheader()
-        w.writerow(quali_dict)
+    with open('../DataSet/Topologies-json/Fmaps-Topology-'+ str(args[4]) + '-Qualities.csv', 'w') as file:
+        dict_writer = csv.DictWriter(file, quali_dict.keys())
+        dict_writer.writeheader()
+        dict_writer.writerow(quali_dict)
 
 
 def best_topology(scenario_id):
     scenario = get_scenarios_list()[scenario_id-1]
     model_throughput, model_delay, model_pdr = load_models()
     initial_drones = [[1.0, 1.0], [4.0, 4.0], [7.0, 7.0]]
-    drones, final_value, [throughput, delay, pdr] = simulated_annealing(model_throughput, model_delay, model_pdr, scenario, initial_drones)
+    drones, final_value, [throughput, delay, pdr] = simulated_annealing.simulated_annealing(model_throughput, model_delay, model_pdr, scenario, initial_drones)
     pdr = min(1, pdr)
     save_drones_to_json(drones,scenario_id)
     print("Best drones position: "+str(drones))
@@ -80,7 +77,7 @@ def best_topology(scenario_id):
     print("Throughput: "+str(throughput))
     print("Delay: "+str(delay))
     print("PDR: "+str(pdr))
-    save_qualities_to_csv(quality,throughput, delay, pdr,scenario_id)
+    save_qualities_to_csv(settings.quality,throughput, delay, pdr,scenario_id)
 
 def best_topology_all_scenarios():
     for index in range(10):
@@ -88,4 +85,3 @@ def best_topology_all_scenarios():
 
 if __name__ == '__main__':
     best_topology_all_scenarios()
-	

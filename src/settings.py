@@ -1,4 +1,3 @@
-import sys
 import os
 import platform
 
@@ -29,9 +28,10 @@ TEST_RESULTS = 0
 def quality(throughput, delay, pdr):
     return throughput - delay / 500 +pdr
 
-abs_path = os.path.abspath(os.path.dirname(__file__))
 
-if platform.system() == "Windows" :
-	DATASET_DIRECTORY =  "../DataSet"
+
+if platform.system() == "Windows":
+    DATASET_DIRECTORY = "../DataSet"
 else:
-	DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")
+    abs_path = os.path.abspath(os.path.dirname(__file__))
+    DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")

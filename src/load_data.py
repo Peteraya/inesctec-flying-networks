@@ -1,26 +1,24 @@
-import pandas as pd
 import glob
 import os
-import platform
-from utils import *
-from settings import *
+import pandas as pd
+import settings
 
 
 
 def create_results(dataset_directory):
     results_directory = os.path.join(dataset_directory, "Results/Scenario-")
-    path =results_directory
+    path = results_directory
     results_list = []
-    for index_scn in range(SCENARIOS_NO):
+    for index_scn in range(settings.SCENARIOS_NO):
         new_path = path + str(index_scn+1)+'/'
         list_scenario = []
-        for index in range(SCENARIO_TOPOLOGIES_NO):
-            allFiles = glob.glob(new_path + "/Results-"+str(index + 1)+"-*.csv")
+        for index in range(settings.SCENARIO_TOPOLOGIES_NO):
+            all_files = glob.glob(new_path + "/Results-"+str(index + 1)+"-*.csv")
             frame = pd.DataFrame()
             list_ = []
-            for index in range(len(allFiles)):
-                df = pd.read_csv(allFiles[index], index_col = False, header=0)
-                list_.append(df)
+            for index in range(len(all_files)):
+                result_frame = pd.read_csv(all_files[index], index_col = False, header=0)
+                list_.append(result_frame)
 
             frame = pd.concat(list_)
             list_scenario.append(frame[0:10].describe().loc[['mean']])

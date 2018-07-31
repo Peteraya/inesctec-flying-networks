@@ -1,9 +1,8 @@
-import numpy as np
-import pandas as pd
-import math
-import os, glob
-import codecs, json
 import random
+import math
+import numpy as np
+
+
 
 def rotate(size, x, y, angle):
     if angle == 90:

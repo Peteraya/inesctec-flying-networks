@@ -1,7 +1,8 @@
-import context
 import unittest
-import utils
 import math
+import context
+import utils
+
 
 class testDistanceEncoding(unittest.TestCase):
     def test_sparse_to_distance_simple(self):
@@ -14,5 +15,5 @@ class testDistanceEncoding(unittest.TestCase):
         new_matrix = utils.sparse_to_distance(matrix)
         self.assertSequenceEqual(new_matrix.tolist(), [[1, 0, 1], [math.sqrt(2), 1, 1], [1, 1, 0], [0, 1, 1]])
 
-if(__name__ == '__main__'):
+if __name__ == '__main__':
     unittest.main()
