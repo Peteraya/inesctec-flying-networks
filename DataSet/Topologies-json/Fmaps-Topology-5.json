@@ -1,0 +1,5 @@
+[
+	{ "x" : 75.0	,	"y" : 105.0	,	"z" : 10	,	"wifiCellRange" : 100	,	"wifiChannelNumber" : 36 } ,
+	{ "x" : 255.0	,	"y" : 105.0	,	"z" : 10	,	"wifiCellRange" : 100	,	"wifiChannelNumber" : 40 } ,
+	{ "x" : 135.0	,	"y" : 225.0	,	"z" : 10	,	"wifiCellRange" : 100	,	"wifiChannelNumber" : 44 }
+]
