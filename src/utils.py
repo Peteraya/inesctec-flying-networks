@@ -18,7 +18,7 @@ def rotate(size, coordinate_x, coordinate_y, angle):
         angle: Angle of the rotation. Must be in [90, 180, 270]
     
     Returns:
-        New coordinates of the cell to which a rotation has been applied
+        New coordinates of the cell to which a rotation has been applied.
 
     Raises:
         ValueError: If angle doesn't belong to [90, 180, 270]
@@ -44,7 +44,7 @@ def symmetric(size, coordinate_x, coordinate_y, angle_axis):
         angle: Angle of the rotation. Must be in [0, 45, 90, 135]
     
     Returns:
-        New coordinates of the cell to which a symmetry has been applied
+        New coordinates of the cell to which a symmetry has been applied.
 
     Raises:
         ValueError: If angle doesn't belong to [0, 45, 90, 135]
@@ -71,7 +71,7 @@ def transform_matrix(matrix, function, angle):
         angle: Angle of the transformation
     
     Returns:
-        New matrix to which the original matrix was transformed to
+        New matrix to which the original matrix was transformed to.
 
     Raises:
         ValueError: If matrix is empty (i.e. has size 0)
@@ -99,11 +99,20 @@ def distance(cell1, cell2):
         cell2: Second cell of the pair of cells whose distance will be computed. Consists of a list with two float elements.
     
     Returns:
-        Euclidian distance between the two cells
+        Euclidian distance between the two cells.
     """
     return math.sqrt((cell1[0]-cell2[0])*(cell1[0]-cell2[0]) + (cell1[1]-cell2[1])*(cell1[1]-cell2[1]) )
 
 def sparse_to_distance(sparse_matrix):
+    """
+    Function that converts a matrix with sparse enconding to a new matrix with distance encoding
+
+    Args:
+        sparse_matrix: Matrix with sparse encoding that is going to be converted.
+
+    Returns:
+        Matrix converted to distance encoding.
+    """
     drone_positions = []
     for i in range(len(sparse_matrix)):
         for j in range(len(sparse_matrix[i])):
@@ -123,53 +132,46 @@ def sparse_to_distance(sparse_matrix):
     return distance_matrix
 
 def stats_matrix(matrix):
-    sum = 0
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            sum += matrix[i][j]
+    """
+    Function that computes the mean and the standard deviation of a matrix
+
+    Args:
+        matrix: Matrix whose statistics we want to compute
+
+    Returns:
+        [mean, std], where mean and std are, respectively, the mean and the standard deviation of all elements of the matrix
+    """
+    sum_matrix = 0
+    for line in matrix:
+        for elem in line:
+            sum_matrix += elem
     
-    matrix_noElems = len(matrix) * len(matrix[0])
-    mean = sum / matrix_noElems
+    matrix_no_elems = len(matrix) * len(matrix[0])
+    mean = sum_matrix / matrix_no_elems
     sum_std = 0
-    for i in range(len(matrix)):
-        for j in range(len(matrix[i])):
-            sum_std += (matrix[i][j] - mean)*(matrix[i][j] - mean)
+    for line in matrix:
+        for elem in line:
+            sum_std += (elem - mean)*(elem - mean)
   
-    std = math.sqrt(sum_std / matrix_noElems)
+    std = math.sqrt(sum_std / matrix_no_elems)
 
     return mean, std
 
 def normalize_matrix(matrix, new_mean, new_std):
+    """
+    Normalizes matrix according to new values of its mean and standard deviation
+
+    Args:
+        matrix: Matrix that is going to be normalized
+        new_mean: New mean of all the elements of the new matrix
+        new_std: New standard of deviation of all the elements of the new matrix
+
+    Returns:
+        New matrix with mean and standard of deviation normalized
+    """
     new_matrix = np.empty((len(matrix), len(matrix[0])), dtype='float')
     mean, std = stats_matrix(matrix)
     for i in range(len(matrix)):
        for j in range(len(matrix[0])):
            new_matrix[i][j] = ((matrix[i][j] - mean) / std) * new_std + new_mean
     return new_matrix
-
-
-def matrix_multiply_add(matrix, new_mean, new_std):
-    new_matrix = np.empty((len(matrix), len(matrix[0])), dtype='float')
-    for i in range(len(matrix)):
-       for j in range(len(matrix[0])):
-           new_matrix[i][j] = matrix[i][j] * new_std + new_mean
-    return new_matrix
-
-def round_matrix(matrix, decimal_points):
-    new_matrix = np.empty((len(matrix), len(matrix[0])), dtype='float')
-    for i in range(len(matrix)):
-       for j in range(len(matrix[0])):
-           new_matrix[i][j] = round(matrix[i][j], decimal_points)
-    return new_matrix
-
-def shuffle_input_data(input_x, input_y):
-    struct_to_shuffle = []
-    for i in range(len(input_x)):
-        struct_to_shuffle.append([input_x[i], input_y[i]])
-    random.shuffle(struct_to_shuffle)
-    new_input_x = []
-    new_input_y = []
-    for element in struct_to_shuffle:
-        new_input_x.append(element[0])
-        new_input_y.append(element[1])
-    return np.array(new_input_x), np.array(new_input_y)

@@ -24,10 +24,11 @@ TEST_RESULTS = True
 def quality(throughput, delay, pdr):
     return throughput - delay / 500 +pdr
 
+def get_dataset_directory():
+    if platform.system() == "Windows":
+        return "../DataSet"
+    else:
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        return os.path.join(abs_path, "../DataSet")
 
-
-if platform.system() == "Windows":
-    DATASET_DIRECTORY = "../DataSet"
-else:
-    abs_path = os.path.abspath(os.path.dirname(__file__))
-    DATASET_DIRECTORY = os.path.join(abs_path, "../DataSet")
+DATASET_DIRECTORY = get_dataset_directory()
