@@ -1,39 +1,106 @@
+"""
+This module contains generic functions that are used by other modules in the program
+"""
 import random
 import math
 import numpy as np
 
 
 
-def rotate(size, x, y, angle):
+def rotate(size, coordinate_x, coordinate_y, angle):
+    """
+    Function that given a set of coordinates of a cell square matrix, returns the new coordinates of that cell after a rotation has been applied.  
+    
+    Args:
+        size: size of the matrix
+        coordinate_x: X coordinate of the cell
+        coordinate_y: Y coordinate of the cell
+        angle: Angle of the rotation. Must be in [90, 180, 270]
+    
+    Returns:
+        New coordinates of the cell to which a rotation has been applied
+
+    Raises:
+        ValueError: If angle doesn't belong to [90, 180, 270]
+    """
     if angle == 90:
-        return y, size - 1 - x
+        return coordinate_y, size - 1 - coordinate_x
     elif angle == 180:
-        return size - 1 - x, size - 1 - y
+        return size - 1 - coordinate_x, size - 1 - coordinate_y
     elif angle == 270:
-        return size - 1 - y, x
+        return size - 1 - coordinate_y, coordinate_x
+    else:
+        raise ValueError('The angle of a rotation can only be one of [90, 180, 270]')
 
 
-def symmetric(size, x, y, angle_axis):
+def symmetric(size, coordinate_x, coordinate_y, angle_axis):
+    """
+    Function that given a set of coordinates of a cell square matrix, returns the new coordinates of that cell after a symmetry has been applied.  
+    
+    Args:
+        size: size of the matrix
+        coordinate_x: X coordinate of the cell
+        coordinate_y: Y coordinate of the cell
+        angle: Angle of the rotation. Must be in [0, 45, 90, 135]
+    
+    Returns:
+        New coordinates of the cell to which a symmetry has been applied
+
+    Raises:
+        ValueError: If angle doesn't belong to [0, 45, 90, 135]
+    """
     if angle_axis == 0:
-        return x, size - 1 - y
+        return coordinate_x, size - 1 - coordinate_y
     elif angle_axis == 45:
-        return y, x
+        return coordinate_y, coordinate_x
     elif angle_axis == 90:
-        return size - 1 - x, y
+        return size - 1 - coordinate_x, coordinate_y
     elif angle_axis == 135:
-        return size - 1 - y, size - 1 - x 
+        return size - 1 - coordinate_y, size - 1 - coordinate_x
+    else:
+        raise ValueError('The angle of a symmetry can only be one of [0, 45, 90, 135]')
 
-#Note: the matrix has to be square
+
 def transform_matrix(matrix, function, angle):
+    """
+    Function that applies a transformation (rotation or symmetry) to a matrix  
+    
+    Args:
+        matrix: Matrix to be transformed
+        function: Function that defines the transformation to apply (rotate or symmetry)
+        angle: Angle of the transformation
+    
+    Returns:
+        New matrix to which the original matrix was transformed to
+
+    Raises:
+        ValueError: If matrix is empty (i.e. has size 0)
+        ValueError: If matrix is not square
+    """
+    if len(matrix) == 0:
+        raise ValueError('The matrix must have size bigger than 0')
+    elif not(len(matrix) == len(matrix[0])):
+        raise ValueError('The matrix must be square')
+
     size = len(matrix)
     new_matrix = np.empty((size, size), dtype = 'float')
-    for y in range(len(matrix)):
-        for x in range(len(matrix[y])):
-            new_x, new_y = function(size, x, y, angle)
-            new_matrix[new_y][new_x] = matrix[y][x]
+    for coordinate_y in range(len(matrix)):
+        for coordinate_x in range(len(matrix[coordinate_y])):
+            new_x, new_y = function(size, coordinate_x, coordinate_y, angle)
+            new_matrix[new_y][new_x] = matrix[coordinate_y][coordinate_x]
     return new_matrix    
 
 def distance(cell1, cell2):
+    """
+    Function that computes the euclidian distance between two pairs of coordinates
+
+    Args:
+        cell1: First cell of the pair of cells whose distance will be computed. Consists of a list with two float elements.
+        cell2: Second cell of the pair of cells whose distance will be computed. Consists of a list with two float elements.
+    
+    Returns:
+        Euclidian distance between the two cells
+    """
     return math.sqrt((cell1[0]-cell2[0])*(cell1[0]-cell2[0]) + (cell1[1]-cell2[1])*(cell1[1]-cell2[1]) )
 
 def sparse_to_distance(sparse_matrix):
@@ -106,17 +173,3 @@ def shuffle_input_data(input_x, input_y):
         new_input_x.append(element[0])
         new_input_y.append(element[1])
     return np.array(new_input_x), np.array(new_input_y)
-
-def mean_absolute_percentage_error(y_true, y_pred):
-    sum_abs_perc_error = 0
-    for i in range(len(y_true)):
-        sum_abs_perc_error += abs((y_true[i]-y_pred[i])/y_true[i])
-    
-    return (100/len(y_true))*sum_abs_perc_error
-
-
-
-    
-
-
-

@@ -1,8 +1,8 @@
-import utils
 import math
-import numpy as np
 import random
 import time
+import numpy as np
+import utils
 import settings
 import data_preprocess
 random.seed(time.time())
@@ -17,7 +17,6 @@ def valid_position(position, nrows, ncolumns):
 
 def adjacent_position(position, nrows, ncolumns):
     new_position = random.randint(0, 3)
-    position_selected = False
 
     while(True):
         if(new_position % 4 == 0 and valid_position([position[0]+1, position[1]], nrows, ncolumns)):
@@ -39,8 +38,8 @@ def adjacent_state(drones, nrows, ncolumns):
 def value(model_throughput, model_delay, model_pdr, scenario, topology):
 
     scenario_topologies_list = np.array([np.array([scenario, topology])])
-    if(settings.CHANNELS_LAST == 1):
-        scenario_topologies_list = data_preprocess.build_input_structure_channels_last(scenario_topologies_list)
+    if(settings.CHANNELS_LAST):
+        scenario_topologies_list = np.array(data_preprocess.build_input_structure_channels_last(scenario_topologies_list))
     throughput_pred = model_throughput.predict(scenario_topologies_list)
     delay_pred = model_delay.predict(scenario_topologies_list)
     pdr_pred = model_pdr.predict(scenario_topologies_list)
@@ -50,9 +49,9 @@ def get_topology(drones, mean, std, nrows, ncolumns):
     topology = np.zeros((nrows, ncolumns))
     for i in range(0, len(drones)):
         topology[int(drones[i][0])][int(drones[i][1])] = 1
-    if(settings.DISTANCE_ENCODING == 1):
+    if(settings.DISTANCE_ENCODING):
         topology = utils.sparse_to_distance(topology)
-    if(settings.NORMALIZE_DATA == 1):
+    if(settings.NORMALIZE_DATA):
         topology = utils.normalize_matrix(topology, mean, std)
     return topology
 
@@ -62,7 +61,6 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, dron
     ncolumns = len(scenario[0])
     topology = get_topology(drones, mean, std, nrows, ncolumns)
     current_value, variables = value(model_throughput, model_delay, model_pdr, scenario, topology)
-    best_topology = np.copy(topology)
     best_drones = drones.copy()
     best_value = current_value
     best_variables = variables.copy()
@@ -84,7 +82,6 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, dron
             variables = new_variables
             if(current_value > best_value):
                 best_value = current_value
-                best_topology = np.copy(topology)
                 best_drones = drones.copy()
                 best_variables = variables.copy()
         else:
@@ -97,7 +94,6 @@ def simulated_annealing(model_throughput, model_delay, model_pdr, scenario, dron
                 variables = new_variables
                 if(current_value > best_value):
                     best_value = current_value
-                    best_topology = np.copy(topology)
                     best_drones = drones.copy()
                     best_variables = variables.copy()
         temperature -= 1

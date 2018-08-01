@@ -11,9 +11,9 @@ import models.base_model
 import keras.optimizers
 from keras.layers import LeakyReLU
 from keras import backend
+from keras.models import Model
 
-def mean_absolute_percentage_error(y_true, y_pred):
-    return 100*backend.mean(abs((y_true-y_pred)/y_true), axis=-1)
+
 
 
 class DefaultModel(models.base_model.BaseModel):
@@ -22,7 +22,7 @@ class DefaultModel(models.base_model.BaseModel):
         self.variable_name = variable_name
         #input layer
         visible = Input(shape=(2,10, 10))
-        modelPrintingName= "default_model.png"
+        model_printing_name= "default_model.png"
 
         conv1 = Conv2D(32, kernel_size=3, data_format = "channels_first", activation='relu')(visible)
         #pool1 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv1)
@@ -30,7 +30,7 @@ class DefaultModel(models.base_model.BaseModel):
         if(extra_layer):
             conv3 = Conv2D(64, kernel_size=3, data_format = "channels_first", activation='relu')(conv2)
             pool2 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv3)
-            modelPrintingName = "extra_layer_model.png"
+            model_printing_name = "extra_layer_model.png"
         else:
             pool2 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv2)
         flat = Flatten(data_format = "channels_first")(pool2)
@@ -40,14 +40,14 @@ class DefaultModel(models.base_model.BaseModel):
         #output layers
         pre_output = Dense(1, activation='linear', kernel_initializer='normal')(hidden2)
         output = LeakyReLU()(pre_output)
-        model = models.base_model.Model(inputs=visible, outputs=output)
+        model = Model(inputs=visible, outputs=output)
     
         
         self.model = model
 
         
-        self.print_model(modelPrintingName)
+        self.print_model(model_printing_name)
         adam_opt = keras.optimizers.Adam(lr=learning_rate)
-        self.model.compile(optimizer = adam_opt, loss="mse", metrics=['mae', mean_absolute_percentage_error])
+        self.model.compile(optimizer = adam_opt, loss="mse", metrics=['mae', models.base_model.mean_absolute_percentage_error])
         self.model.summary()
         

@@ -1,16 +1,15 @@
 import numpy as np
 import settings
 import utils
-from random import *
-
+import random
 
 def datarate_matrix(scenario_frame):
     scenario_matrix = np.zeros((settings.SCENARIO_ROWS, settings.SCENARIO_COLUMNS), dtype = 'float')
     for i in range(len(scenario_frame)):
-        x = scenario_frame.loc[i, 'x']
-        y = scenario_frame.loc[i, 'y']
+        coordinate_x = scenario_frame.loc[i, 'x']
+        coordinate_y = scenario_frame.loc[i, 'y']
         rate = scenario_frame.loc[i, 'dataRateMbps']
-        scenario_matrix[y][x] = rate
+        scenario_matrix[coordinate_y][coordinate_x] = rate
     
     return scenario_matrix    
 
@@ -56,19 +55,19 @@ def build_input_structure(scenarios, results, list_scenarios, list_topologies):
     for scenario_id in list_scenarios:
         scenario_begin_index = (scenario_id - 1) * settings.SCENARIO_TOPOLOGIES_NO
         scenario_matrix = datarate_matrix(scenarios[scenario_id - 1])
-        if(settings.NORMALIZE_DATA == 1):
+        if(settings.NORMALIZE_DATA):
             mean, std = utils.stats_matrix(scenario_matrix)
         for topology_id in list_topologies[index_scenario]:
             index_results = scenario_begin_index + topology_id - 1
             topology_matrix, qualities_list = drones_matrix(results.loc[index_results])
-            if(settings.DISTANCE_ENCODING == 1):
+            if(settings.DISTANCE_ENCODING):
                 topology_matrix = utils.sparse_to_distance(topology_matrix)
-            if(settings.NORMALIZE_DATA == 1):
+            if(settings.NORMALIZE_DATA):
                 topology_matrix = utils.normalize_matrix(topology_matrix, mean, std)
             model_struct_orig.append([scenario_matrix, topology_matrix])
             model_prediction.append(qualities_list)
         index_scenario += 1
-    if(settings.USE_TRANSFORMATIONS == 1):
+    if(settings.USE_TRANSFORMATIONS):
         #Then the topologies with a 90 rotation
         model_struct_rot1, model_pred_rot1 = build_input_structure_transformation(model_struct_orig, model_prediction, list_scenarios, list_topologies, utils.rotate, 90)
         #Then the topologies with a 180 rotation
@@ -116,17 +115,17 @@ def separate_qualities(qualities_list):
 
     return throughput, delay, jitter, pdr
 
-def build_topologie_train_list(scenarios):
+def build_topologies_train_list(scenarios):
 
     top_list = []
 
     for index in range(len(scenarios)):
-        top_list.append(sample(range(1, settings.SCENARIO_TOPOLOGIES_NO), settings.TOPOLOGIES_TRAINING))
+        top_list.append(random.sample(range(1, settings.SCENARIO_TOPOLOGIES_NO), settings.TOPOLOGIES_TRAINING))
 
     return top_list
 
 
-def build_topologie_validation_n_test_list(train_list):
+def build_topologies_validation_n_test_list(train_list):
 
     return_list = []
     validation_list = []
