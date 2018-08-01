@@ -1,3 +1,6 @@
+"""
+This module loads data from files
+"""
 import glob
 import os
 import pandas as pd
@@ -6,6 +9,9 @@ import settings
 
 
 def create_results(dataset_directory):
+    """
+    Groups results in a single file so that it becomes faster to load the data 
+    """
     results_directory = os.path.join(dataset_directory, "Results/Scenario-")
     path = results_directory
     results_list = []
@@ -43,6 +49,10 @@ def create_results(dataset_directory):
 
 
 def read_results(dataset_directory):
+    """
+    Loads results, grouping all the results together in a single file, if that file does not exists
+    or loading the results from the already existing results single file
+    """
     results_file = os.path.join(dataset_directory, "results.csv")
     if not(os.path.isfile(results_file)):
         create_results(dataset_directory)
@@ -53,6 +63,9 @@ def read_results(dataset_directory):
 
 
 def read_scenarios(dataset_directory):
+    """
+    Loads data relative to the scenarios used
+    """
     scenarios = []
     for i in range(1, 11):
         scenario_directory = os.path.join(dataset_directory, "Results/Scenario-"+str(i))

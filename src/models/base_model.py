@@ -1,26 +1,47 @@
+"""
+This module contains the abstract class that represents the 
+base of the machine learning models used throughout our program and an auxiliary function
+"""
 import glob
-import os 
+import os
+from abc import abstractmethod
 from keras.utils import plot_model
-from keras.models import Model
 from keras.callbacks import ModelCheckpoint
-import numpy as np
-import matplotlib.pyplot as plt
-from abc import ABCMeta, abstractmethod
-import settings
 from keras import backend
+import matplotlib.pyplot as plt
+import settings
 
 def mean_absolute_percentage_error(y_true, y_pred):
+    """
+    Computes the mean absolute percentage error of two tensors
+
+    Args:
+        y_true: tensor that contains the actual values of a certain variable.
+        y_pred: tensor that contains the predicted values of a certain variable.
+
+    Returns:
+        Mean Absolute Percentage Error of tensors y_true and y_pred
+    """
     return 100*backend.mean(abs((y_true-y_pred)/y_true), axis=-1)
 
 class BaseModel:
+    """
+    Abstract class that represent the basis of the machine learning models used throughout our program.
+    """
     @abstractmethod
     def __init__(self):
         pass
 
     def print_model(self, filename):
-        plot_model(self.model, to_file = '../DataSet/'+filename)
+        """
+        Prints model layers to a file
+        """
+        plot_model(self.model, to_file='../DataSet/'+filename)
     
     def save_json(self, variable_name):
+        """
+        Saves model charateristics to json file
+        """
         all_files = glob.glob("../DataSet/Models-json/model_"+variable_name+"*.json")
         new_id = len(all_files) + 1
         model_json = self.model.to_json() 
@@ -28,6 +49,9 @@ class BaseModel:
             json_file.write(model_json)
     
     def save_plots(self, history):
+        """
+        Saves plots of the comparision between the performance of the model in the validation set and the training set.
+        """
         if not(os.path.exists("../DataSet/Plots/"+self.variable_name)):
             plot_id = 1
         else:
@@ -55,6 +79,16 @@ class BaseModel:
         
 
     def run(self, input_train, y_train, input_validation, y_validation, n_epochs):
+        """
+        Fits the training data to model
+
+        Args:
+            input_train: Training set that is going to be fit in the model
+            y_train: Actual values of the training set
+            input_validation: Validation set 
+            y_validation: Actual values of the validation set
+            n_epochs: Number of epochs the model will be trained on
+        """
         
         validation_empty = len(input_validation) == 0
 
@@ -89,6 +123,13 @@ class BaseModel:
             self.evaluate(input_validation, y_validation)
         
     def evaluate(self, input_test, y_test):
-        score = self.model.evaluate(input_test, y_test,verbose=1)
+        """
+        Evaluates the performance of the model according to previously defined metrics
+
+        Args:
+            input_test: Test set that is going to be fit in the model
+            y_test: Actual values of the test set
+        """
+        score = self.model.evaluate(input_test, y_test, verbose=1)
         print("----------------------------------------------------")
         print("Score "+ self.variable_name + ": ", score)

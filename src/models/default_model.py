@@ -1,31 +1,43 @@
+"""
+This module defines the class DefaultModel
+"""
 import numpy as np
 np.random.seed(1337)
 
-from keras.utils import plot_model
 from keras.layers import Input
 from keras.layers import Dense
 from keras.layers import Flatten
 from keras.layers.convolutional import Conv2D
 from keras.layers.pooling import MaxPooling2D
-import models.base_model
 import keras.optimizers
 from keras.layers import LeakyReLU
-from keras import backend
 from keras.models import Model
+import models.base_model
 
 
 
 
 class DefaultModel(models.base_model.BaseModel):
+    """
+    This class represents the default model used in our program.
+    It consists of a convolutional neural network with convolutional, pooling and dense layers.
+    """
     
     def __init__(self, learning_rate, variable_name, extra_layer=False):
+        """
+        Constructor of the class DefaultModel.
+
+        Args:
+            learning_rate: Learning Rate used by the optimizer of this model.
+            variable_name: Name of the variable this model is trying to predict.
+            extra_layer: If true, an extra layer consisting of a convolutional layer will be added.
+        """
         self.variable_name = variable_name
         #input layer
         visible = Input(shape=(2,10, 10))
         model_printing_name= "default_model.png"
 
         conv1 = Conv2D(32, kernel_size=3, data_format = "channels_first", activation='relu')(visible)
-        #pool1 = MaxPooling2D(pool_size=(2, 2), data_format = "channels_first")(conv1)
         conv2 = Conv2D(64, kernel_size=3, data_format = "channels_first", activation='relu')(conv1)
         if(extra_layer):
             conv3 = Conv2D(64, kernel_size=3, data_format = "channels_first", activation='relu')(conv2)
