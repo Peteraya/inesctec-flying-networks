@@ -1,5 +1,7 @@
 # INESCTEC-FLYINGNETWORKS
 
+## What is this
+This software was made over the course of a summer internship at INESC TEC Porto. Its goal is to use a machine learning to predict the performance of a network based on UAVs (unnamed aerial vehicles), and use that prediction to chose the UAVs location which gives the best performance.
 
 
 We have done 2 different scripts that should be run:
