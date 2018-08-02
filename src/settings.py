@@ -1,5 +1,5 @@
 """
-This module contains the generic settings of our program, that will change 
+This module contains the generic settings of our program, that will change
 the way our model will be compileand way data will be fit into it.
 """
 import os
