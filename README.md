@@ -22,4 +22,11 @@ Used to get the best topology for 10 predefined scenarios, representing the traf
 
 `python3 best_topology.py`
   
-  All code was done considering python3 and it is placed at the src folder. We also have a FinalResults folder, where we some plots and some excel analysing the data obtained. All of our work during this one month internship can be resumed with the presention present at FinalResults folder, also.  
+ ## Final Results
+  The folder FinalResults contains some plots and excel files that show the accuracy of our model. A resume of our entire work over the course of the internship can be found at FinalReport.pdf
+ 
+ ## Authors
+ 
+ [Francisco Andrade] (https://github.com/francis-andrade)
+ [Pedro Silve] (https://github.com/Peteraya)
+  
