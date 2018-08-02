@@ -27,6 +27,7 @@ Used to get the best topology for 10 predefined scenarios, representing the traf
  
  ## Authors
  
- [Francisco Andrade] (https://github.com/francis-andrade)
- [Pedro Silve] (https://github.com/Peteraya)
+ [Francisco Andrade](https://github.com/francis-andrade)
+ 
+ [Pedro Silva](https://github.com/Peteraya)
   
