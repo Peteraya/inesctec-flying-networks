@@ -3,6 +3,10 @@
 ## What is this
 This software was made over the course of a summer internship at INESC TEC Porto. Its goal is to use a machine learning to predict the performance, measured by the variables throughput, delay and pdr, of a network based on UAVs (unnamed aerial vehicles), and use that prediction to chose the UAVs location which gives the best performance.
 
+## Dependencies
+* [Python3](https://www.python.org/downloads/)
+* [Keras](http://keras.io/#installation)
+* [TensorFlow](https://www.tensorflow.org/install/install_sources)
 
 ## Instructions
 There are 2 different scripts that should be run:
@@ -23,7 +27,7 @@ Used to get the best topology for 10 predefined scenarios, representing the traf
 `python3 best_topology.py`
   
  ## Final Results
-  The folder FinalResults contains some plots and excel files that show the accuracy of our model. A resume of our entire work over the course of the internship can be found at FinalReport.pdf
+  The folder FinalResults contains some plots and excel files that show the accuracy of our model. A resume of our entire work over the course of the internship can be found at FinalReport.pdf.
  
  ## Authors
  
