@@ -1,6 +1,5 @@
 # INESCTEC-FLYINGNETWORKS
-![alt text](https://imgur.com/a/Ue11FP8.png)
-## What is this
+![alt text](https://i.imgur.com/CIAJ5EA.jpg)
 This software was made over the course of a summer internship at INESC TEC Porto. Its goal is to use a machine learning to predict the performance, measured by the variables throughput, delay and pdr, of a network based on UAVs (unnamed aerial vehicles), and use that prediction to chose the UAVs location which gives the best performance.
 
 ## Dependencies
