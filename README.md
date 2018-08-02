@@ -18,7 +18,7 @@ Used to build the model. Can be run with command:
 `python3 build_model.py`
 
 After the model is built, 3 .json files are saved at DataSet/Models-json with the 3 models corresponding to Throughput, Delay and Pdr, and 3 .hdf5 files are saved at DataSet/Checkpoints with the corresponding weights. After that, you should put these files in the DataSet folder, and change their name to model_<QUALITY_METRIC>.json and model_<QUALITY_METRIC>.hdf5 for each corresponding file.
-Ps: in the case of the hdf5 files, everytime this script runs, it generates the 3 files with names like "checkpoint<NUMBER>", so just use the 3 highest numbered files for the last model generated, being the small numbered the Throughput file and the bigger the Pdr. 
+Ps: in the case of the hdf5 files, everytime this script runs, it generates the 3 files with names like "checkpoint<NUMBER>", so just use the 3 highest numbered files for the last model generated, being the lowest numbered the Throughput file and the highest numbered the Pdr. 
 
 - best_topology.py
 
