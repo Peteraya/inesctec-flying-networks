@@ -80,7 +80,7 @@ class BaseModel:
 
     def run(self, input_train, y_train, input_validation, y_validation, n_epochs):
         """
-        Fits the training data to model
+        Fits the training data to model, according to the settings defined in the settings file
 
         Args:
             input_train: Training set that is going to be fit in the model
