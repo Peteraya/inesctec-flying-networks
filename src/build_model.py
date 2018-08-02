@@ -67,9 +67,9 @@ def build_model():
         model_delay = models.default_model.DefaultModel(0.001, "Delay",True)
         model_pdr = models.default_model.DefaultModel(0.001, "Pdr", True)
 
-    model_throughput.run(train_data[0], train_data[1], validation_data[0], validation_data[1], 2)
-    model_delay.run(train_data[0], train_data[2], validation_data[0], validation_data[2],2)
-    model_pdr.run(train_data[0], train_data[3], validation_data[0], validation_data[3], 2)
+    model_throughput.run(train_data[0], train_data[1], validation_data[0], validation_data[1], 100)
+    model_delay.run(train_data[0], train_data[2], validation_data[0], validation_data[2],100)
+    model_pdr.run(train_data[0], train_data[3], validation_data[0], validation_data[3], 100)
 
     if settings.TEST_RESULTS:
         model_throughput.evaluate(test_data[0], test_data[1])

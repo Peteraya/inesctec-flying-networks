@@ -20,7 +20,7 @@ DIVISION_BY_TOPOLOGIES = False #True if division train/validation/test is to be 
 DISTANCE_ENCODING = True #True if the topologies should use distance encoding
 NORMALIZE_DATA = True #True if data should be normalized
 USE_TRANSFORMATIONS = True #True if data augmentation should be used
-CHANNELS_LAST = True #True if data to be fit to the model should have channels_last format
+CHANNELS_LAST = False #True if data to be fit to the model should have channels_last format
 USE_CALLBACKS = True #True if callbacks should be used when training the model
 TEST_RESULTS = True #True if the program should present the results of the tests
 
