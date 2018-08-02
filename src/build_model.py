@@ -49,13 +49,6 @@ def load_dataset():
     throughput_validation, delay_validation, _jitter_validation, pdr_validation = data_preprocess.separate_qualities(qualities_validation)
     throughput_test, delay_test, _jitter_test, pdr_test = data_preprocess.separate_qualities(qualities_test)
 
-
-    #input_train = np.array(input_train)
-    #throughput_train, delay_train, jitter_train, pdr_train = np.array(throughput_train), np.array(delay_train), np.array(jitter_train), np.array(pdr_train)
-    #input_validation = np.array(input_validation)
-    #throughput_validation, delay_validation, jitter_validation, pdr_validation = np.array(throughput_validation), np.array(delay_validation), np.array(jitter_validation), np.array(pdr_validation)
-    #input_test = np.array(input_test)
-    #throughput_test, delay_test, jitter_test, pdr_test = np.array(throughput_test), np.array(delay_test), np.array(jitter_test), np.array(pdr_test)
     return [input_train, throughput_train, delay_train, pdr_train], [input_validation, throughput_validation, delay_validation, pdr_validation], [input_test, throughput_test, delay_test, pdr_test] 
 
 
