@@ -35,4 +35,10 @@ Used to get the best topology for 10 predefined scenarios, representing the traf
  [Francisco Andrade](https://github.com/francis-andrade)
  
  [Pedro Silva](https://github.com/Peteraya)
+ 
+ ## Code License, Media Copyright
+ 
+ Code is licensed under the GNU GPLv3 license.
+ 
+ All images are copyrighted.
   
