@@ -2,7 +2,7 @@
 ![alt text](https://i.imgur.com/CIAJ5EA.jpg)
 
 ## What is this
-This software was made over the course of a summer internship at INESC TEC Porto. It implements a machine learning model to predict the performance of a network based on UAVs (unnamed aerial vehicles), and a searching algorithm that uses that prediction to choose the UAVs location which gives the best performance.
+This software was made over the course of a summer internship at INESC TEC Porto. It implements a machine learning model to predict the performance of a network based on UAVs (unnamed aerial vehicles), and a searching algorithm that uses that prediction to choose the optimal UAVs location.
 
 ## Dependencies
 * [Python3](https://www.python.org/downloads/)
